@@ -7,14 +7,15 @@ const handleDomo = (e) => {
     helper.hideError();
 
     const name = e.target.querySelector('#domoName').value;
+    const color = e.target.querySelector('#domoColor').value;
     const age = e.target.querySelector('#domoAge').value;
 
-    if (!name || !age) {
+    if (!name || !color || !age) {
         helper.handleError('All fields are required!');
         return false;
     }
 
-    helper.sendPost(e.target.action, {name, age}, loadDomosFromServer);
+    helper.sendPost(e.target.action, {name, color, age}, loadDomosFromServer);
 
     return false;
 }
@@ -30,6 +31,8 @@ const DomoForm = (props) => {
         >
             <label htmlFor="name">Name: </label>
             <input type="text" id="domoName" name="name" placeholder="Domo Name" />
+            <label htmlFor="color">Color: </label>
+            <input type="text" id="domoColor" name="color" placeholder="Domo Color" />
             <label htmlFor="age">Age: </label>
             <input type="number" id="domoAge" min="0" name="age" />
             <input type="submit" className="makeDomoSubmit" value="Make Domo" />
@@ -51,6 +54,7 @@ const DomoList = (props) => {
             <div key={domo._id} className="domo">
                 <img src="/assets/img/domoface.jpeg" alt="domo face" className="domoFace" />
                 <h3 className="domoName">Name: {domo.name}</h3>
+                <h3 className="domoColor">Color: {domo.color}</h3>
                 <h3 className="domoAge">Age: {domo.age}</h3>
             </div>
         );
