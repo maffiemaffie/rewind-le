@@ -5,6 +5,10 @@ const loginPage = (req, res) => {
     return res.render('login');
 };
 
+const linkAccPage = (req, res) => {
+    return res.render('linkAcc');
+}
+
 const logout = (req, res) => {
     req.session.destroy();
     return res.redirect('/');
@@ -47,7 +51,7 @@ const signup = async (req, res) => {
         const newAccount = new Account({username, password: hash});
         await newAccount.save();
         req.session.account = Account.toAPI(newAccount);
-        return res.json({ redirect: '/maker' });
+        return res.status(201).json({ redirect: '/maker' });
     } catch (err) {
         console.log(err);
         if (err.code === 11000) {
@@ -59,6 +63,7 @@ const signup = async (req, res) => {
 
 module.exports = {
     loginPage,
+    linkAccPage,
     login,
     logout,
     signup,
