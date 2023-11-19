@@ -9,13 +9,8 @@ const handleLogin = (e) => {
     const username = e.target.querySelector('#user').value;
     const pass = e.target.querySelector('#pass').value;
 
-    if (!username) {
-        helper.handleError('username required');
-        return false;
-    }
-
-    if (!pass) {
-        helper.handleError('password required');
+    if (!username || !pass) {
+        helper.handleError('Username or password is empty!');
         return false;
     }
 
@@ -32,18 +27,8 @@ const handleSignup = (e) => {
     const pass = e.target.querySelector('#pass').value;
     const pass2 = e.target.querySelector('#pass2').value;
 
-    if (!username) {
-        helper.handleError('username required');
-        return false;
-    }
-
-    if (!pass) {
-        helper.handleError('password required');
-        return false;
-    }
-
-    if (!pass2) {
-        helper.handleError('please retype password');
+    if (!username || !pass || !pass2) {
+        helper.handleError('All fields are required!');
         return false;
     }
 
@@ -58,13 +43,6 @@ const handleSignup = (e) => {
 }
 
 const LoginWindow = (props) => {
-    const onSignupClick = (e) => {
-        e.preventDefault();
-        ReactDOM.render(<SignupWindow />,
-            document.getElementById('content'));
-        return false;
-    };
-
     return (
         <form id="loginForm"
             name="loginForm"
@@ -73,24 +51,16 @@ const LoginWindow = (props) => {
             method="POST"
             className="mainForm"
         >
-            <label htmlFor="user">Username: </label>
+            <label htmlFor="username">Username: </label>
             <input type="text" id="user" name="username" placeholder="username" />
             <label htmlFor="pass">Password: </label>
             <input type="password" id="pass" name="pass" placeholder="password" />
             <input type="submit" className="formSubmit" value="Sign in" />
-            <p>No account? <a onClick={onSignupClick} id='signupButton' href="/signup">Sign up</a></p>
         </form>
     );
 };
 
 const SignupWindow = (props) => {
-    const onLoginClick = (e) => {
-        e.preventDefault();
-        ReactDOM.render(<LoginWindow />,
-            document.getElementById('content'));
-        return false;
-    };
-
     return (
         <form id="signupForm"
             name="signupForm"
@@ -99,19 +69,35 @@ const SignupWindow = (props) => {
             method="POST"
             className="mainForm"
         >
-            <label htmlFor="user">Username: </label>
+            <label htmlFor="username">Username: </label>
             <input type="text" id="user" name="username" placeholder="username" />
             <label htmlFor="pass">Password: </label>
             <input type="password" id="pass" name="pass" placeholder="password" />
             <label htmlFor="pass2">Password: </label>
             <input type="password" id="pass2" name="pass2" placeholder="retype password" />
             <input type="submit" className="formSubmit" value="Sign up" />
-            <p>Have an account? <a onClick={onLoginClick} id='loginButton' href='/login'>Log in</a></p>
         </form>
     );
 };
 
 const init = () => {
+    const loginButton = document.getElementById('loginButton');
+    const signupButton = document.getElementById('signupButton');
+
+    loginButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        ReactDOM.render(<LoginWindow />,
+            document.getElementById('content'));
+        return false;
+    });
+
+    signupButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        ReactDOM.render(<SignupWindow />,
+            document.getElementById('content'));
+        return false;
+    });
+
     ReactDOM.render(<LoginWindow />,
         document.getElementById('content'));
 }
