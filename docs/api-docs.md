@@ -616,13 +616,54 @@ Contains a detailed recount of every completed game.
         },
         "outcome": "won",
         "guesses": [
-            // guesses object from game data
+            {
+                "guessNumber": 1,
+                "album": "Is This It",
+                "artist": {
+                    "value": "The Strokes",
+                    "closeness": "correct"
+                },
+                "year": {
+                    "value": 2006,
+                    "result": "tooLow",
+                    "closeness": "far"
+                },
+                "trackCount": {
+                    "value": 14,
+                    "result": "tooHigh",
+                    "closeness": "far"
+                },
+                "rank": {
+                    "value": 7,
+                    "result": "tooLow",
+                    "closeness": "close"
+                }
+            },
+            "..."
         ],
         "hints": [
-            // hints object from game data
+            {
+                "attribute": "trackCount",
+                "value": 11
+            },
+            "..."
         ],
         "actions": [
-            // actions object from game data
+            {
+                "actionNumber": 1,
+                "action": {
+                    "type": "guess",
+                    "guessNumber": 1
+                }
+            },
+            {
+                "actionNumber": 2,
+                "action": {
+                    "type": "hint",
+                    "hintNumber": 1
+                }
+            },
+            "..."
         ]
     },
     "..."
