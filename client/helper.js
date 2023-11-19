@@ -4,7 +4,7 @@
 */
 const handleError = (message) => {
   document.getElementById('errorMessage').textContent = message;
-  document.getElementById('domoMessage').classList.remove('hidden');
+  document.getElementById('message').classList.remove('hidden');
 };
   
 /* Sends post requests to the server using fetch. Will look for various
@@ -20,7 +20,36 @@ const sendPost = async (url, data, handler) => {
   });
 
   const result = await response.json();
-  document.getElementById('domoMessage').classList.add('hidden');
+  document.getElementById('message').classList.add('hidden');
+
+  if(result.redirect) {
+    window.location = result.redirect;
+  }
+
+  if(result.error) {
+    handleError(result.error);
+  }
+
+  if(handler) {
+    handler(result);
+  }
+};
+
+/* Sends post requests to the server using fetch. Will look for various
+    entries in the response JSON object, and will handle them appropriately.
+*/
+const sendGet = async (url, query, handler) => {
+  const queryString = Object.entries(query).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+
+  const response = await fetch(`${url}?${queryString}`, {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+    },
+  });
+
+  const result = await response.json();
+  document.getElementById('message').classList.add('hidden');
 
   if(result.redirect) {
     window.location = result.redirect;
@@ -36,11 +65,12 @@ const sendPost = async (url, data, handler) => {
 };
 
 const hideError = () => {
-  document.getElementById('domoMessage').classList.add('hidden');
+  document.getElementById('message').classList.add('hidden');
 };
 
 module.exports = {
   handleError,
   sendPost,
+  sendGet,
   hideError,
 };
