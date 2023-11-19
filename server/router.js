@@ -12,8 +12,6 @@ const router = (app) => {
 
     app.get('/logout', mid.requiresLogin, controllers.Account.logout);
 
-    // app.get('/linkAccount', mid.requiresLogin, controllers.Account.linkAccPage);
-
     app.get('setLastFmAccount', mid.requiresLogin, controllers.LastFm.setAccount);
     app.get('confirmLastFmAccount', mid.requiresLogin, controllers.LastFm.confirmAccount);
 
