@@ -183,10 +183,10 @@ Status Code|Description
 # Playing Today's Rewind.le
 ## Decoding the game info object
 The game info object is split into four main parts:
-- Info about guesses that can be made
-- Info about guesses that were made
-- Any hints that have been used
-- Each guess and hint in order
+- [Info about guesses that can be made](#guesses-that-can-be-made)
+- [Info about guesses that were made](#guesses-that-were-made)
+- [Any hints that have been used](#hints-that-have-been-used)
+- [Each guess and hint in order](#guesses-and-hints-in-order)
 
 Let's look at each part.
 
@@ -560,8 +560,8 @@ Status Code|Description
 # Accessing User Stats
 ## The stats data object
 The stats object is split into two parts:
-- All time stats
-- All completed games
+- [All time stats](#all-time-stats)
+- [All completed games](#completed-games)
 
 Let's look at each part.
 
