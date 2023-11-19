@@ -200,7 +200,7 @@ Contains a list of every album that can be guessed and the maximum number of inc
     { "artist": "Radiohead", "album": "In Rainbows" },
     { "artist": "The Strokes", "album": "Comedown Machine" },
     { "artist": "Lorde", "album": "Pure Heroine" },
-    // ...
+    "..."
 ],
 "maxGuesses": 10
 ```
@@ -250,7 +250,7 @@ Contains a list of every guess a user has already made and the outcome of each g
             "closeness": "close"
         }
     },
-    // ...
+    "..."
 ],
 ```
 
@@ -345,7 +345,7 @@ Contains a list of every hint used so far.
         "attribute": "trackCount",
         "value": 11
     },
-    // ...
+    "..."
 ],
 ```
 
@@ -374,7 +374,7 @@ Contains a list of each action taken by the player.
                 "hintNumber": 1
             }
         },
-        // ...
+        "..."
     ]
 ```
 
@@ -418,7 +418,7 @@ Redirects a user with no Last.fm connection to connect a Last.fm account.
         { "artist": "Radiohead", "album": "In Rainbows" },
         { "artist": "The Strokes", "album": "Comedown Machine" },
         { "artist": "Lorde", "album": "Pure Heroine" },
-        // ...
+        "..."
     ],
     "maxGuesses": 10,
     "guesses": [
@@ -445,14 +445,14 @@ Redirects a user with no Last.fm connection to connect a Last.fm account.
                 "closeness": "close"
             }
         },
-        // ...
+        "..."
     ],
     "hints": [
         {
             "attribute": "trackCount",
             "value": 11
         },
-        // ...
+        "..."
     ],
     "actions": [
         {
@@ -469,7 +469,7 @@ Redirects a user with no Last.fm connection to connect a Last.fm account.
                 "hintNumber": 1
             }
         },
-        // ...
+        "..."
     ]
 }
 ```
@@ -576,7 +576,7 @@ Compiles all games into a set of all-time stats.
         { "guesses": 2, "frequency": 1 },
         { "guesses": 3, "frequency": 3 },
         { "guesses": 4, "frequency": 10 },
-        // ... 
+        "..." 
     ]
 },
 ```
@@ -625,7 +625,7 @@ Contains a detailed recount of every completed game.
             // actions object from game data
         ]
     },
-    // ...
+    "..."
 ]
 ```
 
@@ -699,7 +699,7 @@ Redirects an unauthenticated user to log in.
             { "guesses": 2, "frequency": 1 },
             { "guesses": 3, "frequency": 3 },
             { "guesses": 4, "frequency": 10 },
-            // ... 
+            "..." 
         ]
     },
 
@@ -738,14 +738,14 @@ Redirects an unauthenticated user to log in.
                         "closeness": "close"
                     }
                 },
-                // ...
+                "..."
             ],
             "hints": [
                 {
                     "attribute": "trackCount",
                     "value": 11
                 },
-                // ...
+                "..."
             ],
             "actions": [
                 {
@@ -762,10 +762,10 @@ Redirects an unauthenticated user to log in.
                         "hintNumber": 1
                     }
                 },
-                // ...
+                "..."
             ]
         },
-        // ...
+        "..."
     ]
 }
 ```
