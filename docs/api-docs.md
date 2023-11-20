@@ -136,6 +136,7 @@ Status Code|Description
 200|Account found
 302|User is not logged in or already has a Last.fm account linked
 400|Missing username
+404|Username not found
 502|Last.fm error
 
 ## Confirming the Last.fm connection
