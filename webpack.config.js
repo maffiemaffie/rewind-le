@@ -3,6 +3,7 @@ const path = require('path');
 module.exports = {
     entry: {
         app: './client/maker.jsx',
+        linkAccount: './client/linkAccount.jsx',
         search: './client/search.jsx',
         login: './client/login.jsx',
     },
