@@ -136,6 +136,7 @@ Status Code|Description
 200|Account found
 302|User is not logged in or already has a Last.fm account linked
 400|Missing username
+404|Username not found
 502|Last.fm error
 
 ## Confirming the Last.fm connection
@@ -522,7 +523,8 @@ The name of the album.
         "value": 7,
         "result": "tooLow",
         "closeness": "close"
-    }
+    },
+    "guessesLeft": 9
 }
 ```
 
@@ -546,7 +548,9 @@ Redirects an unauthenticated user to log in.
 ```json
 {
     "attribute": "trackCount",
-    "value": 11
+    "value": 11,
+    "hintsLeftThisGame": 2,
+    "hintsLeftOwned": 5
 }
 ```
 
