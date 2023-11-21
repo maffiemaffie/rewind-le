@@ -3,14 +3,15 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 
 const handleAccountSearchResults = (result) => {
-    if (result.username && result.realname && result.image) {
-        ReactDOM.render(<ConfirmAccountWindow 
-                username={result.username}
-                name={result.realname}
-                accountImageSrc={`/getLastFm?link=${encodeURIComponent(result.image)}`}
-            />,
-            document.getElementById('content'));
-    }
+    const username = result.username;
+    const realname = result.realname || result.username;
+
+    ReactDOM.render(<ConfirmAccountWindow 
+            username={username}
+            name={realname}
+            accountImageSrc={`/getLastFm?link=${encodeURIComponent(result.image)}`}
+        />,
+        document.getElementById('content'));
 }
 
 const handleSearchAccount = (e) => {
@@ -72,7 +73,7 @@ const ConfirmAccountWindow = (props) => {
             className="mainForm"
         >
             <h2>Is this you?</h2>
-            <div>
+            <div id="lastFmDisplay">
                 <img src={props.accountImageSrc} alt={`${props.username}'s profile picture`} id="lastFmAccountImage" />
                 <p id='lastFmAccountUsername'>{props.username}</p>
                 <p id="lastFmAccountName">{props.name}</p>
