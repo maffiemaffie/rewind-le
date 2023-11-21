@@ -2,6 +2,8 @@ const controllers = require('./controllers');
 const mid = require('./middleware');
 
 const router = (app) => {
+    app.get('/getLastFm', controllers.LastFm.getLastFm);
+
     app.get('/getDomos', mid.requiresLogin, controllers.Domo.getDomos);
     app.get('/searchDomos', mid.requiresLogin, controllers.Domo.getDomosByName);
 
@@ -12,8 +14,9 @@ const router = (app) => {
 
     app.get('/logout', mid.requiresLogin, controllers.Account.logout);
 
-    app.get('setLastFmAccount', mid.requiresLogin, controllers.LastFm.setAccount);
-    app.get('confirmLastFmAccount', mid.requiresLogin, controllers.LastFm.confirmAccount);
+    app.get('/connectLastFm', mid.requiresSecure, mid.requiresNoLastFm, controllers.Account.linkAccountPage);
+    app.post('/connectLastFm/setAccount', mid.requiresLogin, mid.requiresNoLastFm, controllers.Account.setAccount);
+    app.post('/connectLastFm/confirmAccount', mid.requiresLogin, mid.requiresNoLastFm, controllers.Account.confirmAccount);
 
     app.get('/maker', mid.requiresLogin, controllers.Domo.makerPage);
     app.post('/maker', mid.requiresLogin, controllers.Domo.makeDomo);
