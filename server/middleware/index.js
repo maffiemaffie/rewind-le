@@ -23,8 +23,16 @@ const bypassSecure = (req, res, next) => {
     next();
 }
 
+const requiresNoLastFm = (req, res, next) => {
+    if(req.session.account.lastFmAccount) {
+        return res.redirect('/play');
+    }
+    next();
+}
+
 module.exports.requiresLogin = requiresLogin;
 module.exports.requiresLogout = requiresLogout;
+module.exports.requiresNoLastFm = requiresNoLastFm;
 
 if (process.env.NODE_ENV === 'production') {
     module.exports.requiresSecure = requiresSecure;
