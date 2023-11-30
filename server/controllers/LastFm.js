@@ -59,6 +59,14 @@ const findAccount = async (username) => {
     };
 }
 
+const getTopAlbums = async (username, page = 1) => {
+    return await fetchLastFm("user.gettopalbums", { "username": username, page, limit: 100 });
+}
+
+const getAlbumInfo = async (mbid) => {
+    return await fetchLastFm("album.getinfo", { mbid });
+}
+
 const getLastFm = async (req, res) => {
     const link = decodeURIComponent(req.query.link);
 
@@ -72,7 +80,22 @@ const getLastFm = async (req, res) => {
     res.type(contentType).send(Buffer.from(fileBuffer));
 }
 
+const getArtistCloseness = async (target, guess) => {
+    if (target === guess) return "correct";
+    
+    const closenessThreshold = 0.5;
+    const similar = await fetchLastFm("artist.getsimilar", {"artist": target, "limit":20});
+
+    const artistSimilarity = similar.similarartists.artist.find(artist => artist.name === guess);
+    if (!artistSimilarity) return "far";
+    if (artistSimilarity.match > closenessThreshold) return "close";
+    return "far";
+}
+
 module.exports = {
     findAccount,
     getLastFm,
+    getTopAlbums,
+    getAlbumInfo,
+    getArtistCloseness,
 }

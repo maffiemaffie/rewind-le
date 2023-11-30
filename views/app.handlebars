@@ -6,22 +6,34 @@
   <link rel="stylesheet" type="text/css" href="/assets/style.css"/>
 </head>
 <body>
-  <nav><a href="/login"><img id="logo" src="/assets/img/face.png" alt="face logo"/></a>
-    <div class="navlink"><a href="/logout">Log out</a></div>
-    <div class="navlink"><a href="/search">Search Domos</a></div>
-  </nav>
+  <style>
+    .correct { color: green; }
+    .far { color: slategray; }
+    .close { color: yellow; }
 
-  <section id="makeDomo">
+    .tooLow::after { content: " too low"; }
+    .tooHigh::after { content: " too high"; }
+  </style>
+  <header>
+    <nav>
+      <button class="navButton" id="settingsButton">settings</button>
+      <a class="site-title">Rewind.le</a>
+      <a class="navButton" id="howToPlayButton">How to Play</a>
+      <a class="navButton" id="statsButton">Stats</a>
+    </nav>
+  </header>
+
+  <h1>Today's Rewind.le</h1>
+
+  <section id="searchBarContainer">
 
   </section>
-  <section id="domos">
-    
+  <section id="content">
+
   </section>
 
-  <div id="domoMessage" class='hidden'>
-    <img id="speech" src="/assets/img/speech.png" alt="speech box"/>
+  <div id="message" class='hidden'>
     <h3><span id="errorMessage"></span></h3>
-    <img id="domo" src="assets/img/domo.png" alt="domo"/>
   </div>
   <script src="/assets/appBundle.js"></script>
 </body>

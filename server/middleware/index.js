@@ -30,9 +30,17 @@ const requiresNoLastFm = (req, res, next) => {
     next();
 }
 
+const requiresLastFm = (req, res, next) => {
+    if(!req.session.account.lastFmAccount) {
+        return res.redirect('/connectLastFm');
+    }
+    next();
+}
+
 module.exports.requiresLogin = requiresLogin;
 module.exports.requiresLogout = requiresLogout;
 module.exports.requiresNoLastFm = requiresNoLastFm;
+module.exports.requiresLastFm = requiresLastFm;
 
 if (process.env.NODE_ENV === 'production') {
     module.exports.requiresSecure = requiresSecure;
