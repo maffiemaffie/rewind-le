@@ -63,16 +63,31 @@ const getTopAlbums = async (username, page = 1) => {
     return await fetchLastFm("user.gettopalbums", { "username": username, page, limit: 100 });
 }
 
-const getAlbumInfo = async (mbid) => {
-    return await fetchLastFm("album.getinfo", { mbid });
+const getAlbumInfo = async (mbid, artist, album) => {
+    let response = await fetchLastFm("album.getinfo", { mbid });
+    if (response.error) {
+        response = await fetchLastFm("album.getinfo", { artist, album });
+    } 
+
+    return response;
 }
 
 const getLastFm = async (req, res) => {
     const link = decodeURIComponent(req.query.link);
 
-    const response = await fetch(link, {
-        method: "GET"
-    });
+    let response;
+    
+    try {
+        response = await fetch(link, {
+            method: "GET"
+        });
+    } catch (error) {
+        return res.status(400).json({ error: "invalid link" });
+    }
+
+    if (!response.ok) {
+        res.status(response.status).send(response.body);
+    }
 
     const contentType = response.headers.get("Content-Type") || 'application/octet-stream';
 

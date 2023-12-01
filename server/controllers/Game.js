@@ -58,7 +58,7 @@ const createNewGame = async (req, res) => {
     const targetIndex = Math.floor(Math.random() * validGuesses.length);
     const targetAlbum = validGuesses[targetIndex];
 
-    const targetAlbumInfo = await LastFm.getAlbumInfo(targetAlbum.mbid);
+    const targetAlbumInfo = await LastFm.getAlbumInfo(targetAlbum.mbid, targetAlbum.artist, targetAlbum.album);
     const mbAlbumInfo = await MusicBrainz.getAlbumInfo(targetAlbum.mbid);
 
     const target = {
@@ -119,7 +119,7 @@ const guess = async (req, res) => {
     const game = await Game.findOne(query);
     const {target, validGuesses, guesses, maxGuesses} = game;
 
-    const guessLastFmInfo = await LastFm.getAlbumInfo(mbid);
+    const guessLastFmInfo = await LastFm.getAlbumInfo(mbid, artist, album);
 
     const getResult = (target, guess) => {
         if (guess < target) return "tooLow";
@@ -135,6 +135,7 @@ const guess = async (req, res) => {
         return "close"
     };
     
+    console.log(guessLastFmInfo);
     const trackCount = guessLastFmInfo.album.tracks.track.length ?? 1;
     const rank = validGuesses.find(g => (g.artist == artist && g.album == album)).rank;
 
