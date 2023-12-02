@@ -136,7 +136,6 @@ Status Code|Description
 200|Account found
 302|User is not logged in or already has a Last.fm account linked
 400|Missing username
-404|Username not found
 502|Last.fm error
 
 ## Confirming the Last.fm connection
@@ -523,8 +522,7 @@ The name of the album.
         "value": 7,
         "result": "tooLow",
         "closeness": "close"
-    },
-    "guessesLeft": 9
+    }
 }
 ```
 
@@ -548,9 +546,7 @@ Redirects an unauthenticated user to log in.
 ```json
 {
     "attribute": "trackCount",
-    "value": 11,
-    "hintsLeftThisGame": 2,
-    "hintsLeftOwned": 5
+    "value": 11
 }
 ```
 
@@ -560,6 +556,20 @@ Status Code|Description
 200|Hint was successfully used
 302|User is not logged in
 403|No more hints available
+
+## Fetching resources from Last.Fm for display in the browser
+#### `GET /getLastFm`
+Retrieves a file from the specified link and supplies it to the requester.
+
+### Query Parameters
+#### `link` (string)
+The link to the Last.fm file.
+
+### HTTP Status Codes
+Status Code|Description
+-|-
+200|File was succesfully retrieved and supplied
+400|Invalid link
 
 # Accessing User Stats
 ## The stats data object
@@ -908,3 +918,39 @@ Redirects an unauthenticated user to log in.
 Status Code|Description
 -|-
 302|Redirects user to the login page
+
+# Project Questions
+
+## What is the intended purpose of your application?
+
+It's a Wordle-like game inspired by [Wordle](https://www.nytimes.com/games/wordle/) and [Spotle](https://spotle.io/) that uses your [Last.fm](https://www.last.fm/) data to create a game from your favorite albums.
+
+## What work has been completed for this milestone?
+
+I've added a lot of the internal code for using the Last.fm and Musicbrainz APIs. The game is barely playable in its most basic form. I've started to add styling but it won't be visible on the branch currently hosted.
+
+## What work is left, and how do you plan to complete it?
+
+I need to add the last two pages and finish styling. I need to clean up some of the external API code to better handle errors. The game page had the biggest amount of work between all the moving parts and coordinating all the APIs. Now that that hurdle is out of the way, the rest should be fairly straightforward.
+
+## How are you using React?
+
+The login page uses React components to switch between logging in and creating an account. the Last.fm page uses React components to switch between locating an account and confirming it. The game page uses React components for each guess result. 
+
+The stats page will use React components to represent a past game. The settings page will use React components to switch between setting tabs.
+
+## What data are you storing in MongoDB?
+I'm storing the user's login credentials and Last.Fm username. I'm storing all the data from every game they play. 
+
+## What is your profit model?
+I have two paid features I'm planning to implement. Paid hints will help the player identify the target without using a guess. Players with a premium membership will receive extra guesses. 
+
+I haven't implemented either yet but both are pretty simple so it should be pretty straightforward. If I'm short on time I'll opt to only implement one.
+
+## Do you have a plan for going above and beyond? If so, what is it?
+
+I'm using [Last.fm Music Discovery API](https://www.last.fm/api) and [MusicBrainz API](https://musicbrainz.org/doc/MusicBrainz_API) to retrieve the necessary data for the game to run.
+
+## If you used any borrowed code or code fragments, where did you get them from? What do the code fragments do? Where are they in your code?
+
+All of my code is either written by myself or based on the Domomaker assignment. A lot of the old Domomaker code still exists in the project. This will be removed by the final submmission date. I'm replacing the code as I move through the project but I've opted to keep it in during development so the project doesn't break.
