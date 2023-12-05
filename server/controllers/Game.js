@@ -135,8 +135,14 @@ const guess = async (req, res) => {
   const game = await Game.findOne(query);
 
   const {
-    target, validGuesses, guesses, maxGuesses,
+    target, validGuesses, guesses, actions, maxGuesses,
   } = game;
+
+  const guessNumber = guesses.length + 1;
+
+  if (guessNumber > maxGuesses) {
+    return res.status(403).json({ error: "out of guesses" })
+  }
 
   const guessLastFmInfo = await LastFm.getAlbumInfo(mbid, artist, album);
 
@@ -159,9 +165,8 @@ const guess = async (req, res) => {
 
   const guessMusicBrainzInfo = await MusicBrainz.getAlbumInfo(mbid);
   const year = guessMusicBrainzInfo.date.split('-')[0];
-
   const guessDoc = {
-    guessNumber: guesses.length + 1,
+    guessNumber,
     isTarget: rank === target.rank,
     album: guessLastFmInfo.album.name,
     artist: {
@@ -187,6 +192,13 @@ const guess = async (req, res) => {
   };
 
   guesses.push(guessDoc);
+  actions.push({
+    actionNumber: actions.length + 1,
+    action: {
+      type: 'guess',
+      number: guessNumber,
+    },
+  });
   game.save();
 
   return res.json(guessDoc);

@@ -54,6 +54,8 @@ const handleGuessData = (data) => {
 
     document.getElementById('actionList').appendChild(actionContainer);
 
+    if (data.guessesLeft === 0 || data.isTarget) document.querySelector('#searchBar > input').setAttribute("disabled", "");
+
     ReactDOM.render(<Guess guess={data}></Guess>, actionContainer);
 }
 
@@ -63,6 +65,10 @@ const submitGuess = (artist, album, mbid) => {
 
 const handleSearchBarSubmit = (e) => {
     e.preventDefault();
+
+    if (!e.nativeEvent.submitter) {
+        return false;
+    }
 
     const artist = e.nativeEvent.submitter.dataset.artist;
     const album = e.nativeEvent.submitter.dataset.album;
@@ -133,7 +139,7 @@ const SearchBar = (props) => {
 
     return (
         <form id='searchBar' onSubmit={handleSearchBarSubmit}>
-            <input type='text' onInput={handleTextInput}/>
+            <input type='text' onInput={handleTextInput} placeholder='guess an album...'/>
             <ul id='searchOptionList'>
                 {searchOptions}
             </ul>
@@ -155,10 +161,24 @@ const handleGameData = (data) => {
     ReactDOM.render(
         <SearchBar matchingAlbums={[]}></SearchBar>,
         document.getElementById('searchBarContainer')
-    )
+    );
+
+    if (guesses.length === data.maxGuesses) document.querySelector('#searchBar > input').setAttribute("disabled", "");
+}
+
+const closeHowToPlay = (e) => {
+    const wrapper = document.getElementById('howToPlayWrapper');
+
+    if (e.target == wrapper) {
+        wrapper.classList.add('hidden');
+    }
 }
 
 const init = () => {
+    const howToPlay = document.getElementById('howToPlayWrapper');
+    document.getElementById('howToPlayButton').addEventListener('click', () => { howToPlay.classList.remove('hidden') });
+    window.addEventListener('click', closeHowToPlay);
+
     helper.sendGet('/play/getGameInfo', {}, handleGameData);
 }
 
