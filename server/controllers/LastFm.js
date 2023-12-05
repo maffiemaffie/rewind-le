@@ -99,6 +99,8 @@ const getArtistCloseness = async (target, guess) => {
   const closenessThreshold = 0.5;
   const similar = await fetchLastFm('artist.getsimilar', { artist: target, limit: 20 });
 
+  if (similar.error) throw new Error(similar.error);
+
   const artistSimilarity = similar.similarartists.artist.find((artist) => artist.name === guess);
   if (!artistSimilarity) return 'far';
   if (artistSimilarity.match > closenessThreshold) return 'close';

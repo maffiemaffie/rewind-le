@@ -22,6 +22,9 @@ const collectValidTopAlbums = async (lastFmUsername) => {
      */
     // eslint-disable-next-line no-await-in-loop
     const topAlbumJson = await LastFm.getTopAlbums(lastFmUsername, ++currentPage);
+    
+    if (topAlbumJson.error) throw new Error(topAlbumJson.error);
+
     const topAlbums = topAlbumJson.topalbums.album;
     currentPage = topAlbumJson.topalbums['@attr'].page;
     totalPages = topAlbumJson.topalbums['@attr'].totalPages;
@@ -50,25 +53,33 @@ const collectValidTopAlbums = async (lastFmUsername) => {
 };
 
 const createNewGame = async (req, res) => {
-  const validGuesses = await collectValidTopAlbums(req.session.account.lastFmAccount);
-
-  // validGuesses = topAlbums.topalbums.album.map(album => {
-  //     const guess = {
-  //         "album": album.name,
-  //         "artist": album.artist.name,
-  //     };
-
-  //     if (album.mbid !== '') guess.mbid = album.mbid;
-
-  //     return guess;
-  // });
+  let validGuesses;
+  
+  try {
+    validGuesses = await collectValidTopAlbums(req.session.account.lastFmAccount);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Error fetching game data" });
+  }
 
   const targetIndex = Math.floor(Math.random() * validGuesses.length);
   const targetAlbum = validGuesses[targetIndex];
 
   const albumInfoParams = [targetAlbum.mbid, targetAlbum.artist, targetAlbum.album];
+  
   const targetAlbumInfo = await LastFm.getAlbumInfo(...albumInfoParams);
+
+  if (targetAlbumInfo.error) {
+    console.log(targetAlbum.error);
+    return res.status(500).json({ error: "Error fetching game data" });
+  }
+
   const mbAlbumInfo = await MusicBrainz.getAlbumInfo(targetAlbum.mbid);
+
+  if (mbAlbumInfo.error) {
+    console.log(mbAlbumInfo.error);
+    return res.status(500).json({ error: "Error fetching game data" });
+  }
 
   const target = {
     album: targetAlbum.album,
@@ -89,7 +100,7 @@ const createNewGame = async (req, res) => {
   try {
     const newGame = new Game(gameDoc);
     await newGame.save();
-    return newGame;
+    return res.json(Game.toAPI(newGame));
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: 'Error fetching game data' });
@@ -101,12 +112,11 @@ const getData = async (req, res) => {
   today.setHours(0, 0, 0, 0);
 
   const query = { createdDate: { $gte: today }, owner: req.session.account._id };
-  let game = await Game.findOne(query);
+  const game = await Game.findOne(query);
   if (game === null) {
-    game = await createNewGame(req, res);
+    return createNewGame(req, res);
   }
-
-  res.status(200).json(Game.toAPI(game));
+  return res.json(Game.toAPI(game));
 };
 
 const guess = async (req, res) => {
@@ -123,6 +133,7 @@ const guess = async (req, res) => {
 
   const query = { createdDate: { $gte: today }, owner: req.session.account._id };
   const game = await Game.findOne(query);
+
   const {
     target, validGuesses, guesses, maxGuesses,
   } = game;
@@ -143,7 +154,6 @@ const guess = async (req, res) => {
     return 'close';
   };
 
-  console.log(guessLastFmInfo);
   const trackCount = guessLastFmInfo.album.tracks.track.length || 1;
   const { rank } = validGuesses.find((g) => (g.artist === artist && g.album === album));
 
