@@ -29,11 +29,12 @@ const Guess = (props) => {
 
     return (
         <div className='guess'>
-            <h2 className={`albumName ${isTarget}`}>{props.guess.album}</h2>
-            <h3 className={`artistName ${props.guess.artist.closeness}`}>{props.guess.artist.value}</h3>
-            <div className={`guessBlock year ${props.guess.year.closeness} ${props.guess.year.result}`}>Released <span className='guessBlockValue'>{props.guess.year.value}</span></div>
-            <div className={`guessBlock rank ${props.guess.rank.closeness} ${props.guess.rank.result}`}>Rank <span className='guessBlockValue'>{props.guess.rank.value}</span></div>
-            <div className={`guessBlock trackCount ${props.guess.trackCount.closeness} ${props.guess.trackCount.result}`}>Track Count <span className='guessBlockValue'>{props.guess.trackCount.value}</span></div>
+            <p className='guessNumber'>Guess {props.guess.guessNumber}:</p>
+            <h2 className={`albumName closeness-${isTarget}`}>{props.guess.album}</h2>
+            <h3 className={`artistName closeness-${props.guess.artist.closeness}`}>{props.guess.artist.value}</h3>
+            <div className={`guessBlock year closeness-${props.guess.year.closeness} ${props.guess.year.result}`}>Released <span className='guessBlockValue'>{props.guess.year.value}</span></div>
+            <div className={`guessBlock rank closeness-${props.guess.rank.closeness} ${props.guess.rank.result}`}>Rank <span className='guessBlockValue'>{props.guess.rank.value}</span></div>
+            <div className={`guessBlock trackCount closeness-${props.guess.trackCount.closeness} ${props.guess.trackCount.result}`}>Track Count <span className='guessBlockValue'>{props.guess.trackCount.value}</span></div>
         </div>
     );
 }
@@ -41,6 +42,7 @@ const Guess = (props) => {
 const Hint = (props) => {
     return (
         <div className='hint'>
+            <p className='hintNumber'>Hint {props.hint.hintNumber}:</p>
             <div className={`guessBlock ${props.hint.attribute} correct`}>${props.hint.value}</div>
         </div>
     );
