@@ -164,7 +164,19 @@ const handleGameData = (data) => {
     if (guesses.length === data.maxGuesses) document.querySelector('#searchBar > input').setAttribute("disabled", "");
 }
 
+const closeHowToPlay = (e) => {
+    const wrapper = document.getElementById('howToPlayWrapper');
+
+    if (e.target == wrapper) {
+        wrapper.classList.add('hidden');
+    }
+}
+
 const init = () => {
+    const howToPlay = document.getElementById('howToPlayWrapper');
+    document.getElementById('howToPlayButton').addEventListener('click', () => { howToPlay.classList.remove('hidden') });
+    window.addEventListener('click', closeHowToPlay);
+
     helper.sendGet('/play/getGameInfo', {}, handleGameData);
 }
 
