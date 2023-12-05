@@ -81,6 +81,8 @@ nav {
     font-size: x-large;
 
     background-color: var(--background);
+
+    z-index: 500;
 }
 
 nav > .site-title {
@@ -266,7 +268,7 @@ form {
     padding: 0; 
     margin: 0;
 
-    z-index: 999;
+    z-index: 250;
 }
 
 #searchOptionList {
@@ -445,6 +447,30 @@ form {
 }
 .guessBlock.tooLow::after {
     content: "\f0d8";
+}
+
+#howToPlayWrapper {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    background: var(--background-50);
+
+    display: grid;
+    align-content: center;
+    justify-content: center;
+}
+
+#howToPlay {
+    padding: 1em;
+    margin: 1em;
+
+    background: linear-gradient(to top right, var(--background), var(--secondary));
+    border: 1.5px solid var(--primary-50);
 }
 
 /* web */
