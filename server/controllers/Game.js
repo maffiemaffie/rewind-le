@@ -22,7 +22,7 @@ const collectValidTopAlbums = async (lastFmUsername) => {
      */
     // eslint-disable-next-line no-await-in-loop
     const topAlbumJson = await LastFm.getTopAlbums(lastFmUsername, ++currentPage);
-    
+
     if (topAlbumJson.error) throw new Error(topAlbumJson.error);
 
     const topAlbums = topAlbumJson.topalbums.album;
@@ -54,31 +54,31 @@ const collectValidTopAlbums = async (lastFmUsername) => {
 
 const createNewGame = async (req, res) => {
   let validGuesses;
-  
+
   try {
     validGuesses = await collectValidTopAlbums(req.session.account.lastFm);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ error: "Error fetching game data" });
+    return res.status(500).json({ error: 'Error fetching game data' });
   }
 
   const targetIndex = Math.floor(Math.random() * validGuesses.length);
   const targetAlbum = validGuesses[targetIndex];
 
   const albumInfoParams = [targetAlbum.mbid, targetAlbum.artist, targetAlbum.album];
-  
+
   const targetAlbumInfo = await LastFm.getAlbumInfo(...albumInfoParams);
 
   if (targetAlbumInfo.error) {
-    console.log(targetAlbum.error);
-    return res.status(500).json({ error: "Error fetching game data" });
+    console.log(targetAlbumInfo.error);
+    return res.status(500).json({ error: 'Error fetching game data' });
   }
 
   const mbAlbumInfo = await MusicBrainz.getAlbumInfo(targetAlbum.mbid);
 
   if (mbAlbumInfo.error) {
     console.log(mbAlbumInfo.error);
-    return res.status(500).json({ error: "Error fetching game data" });
+    return res.status(500).json({ error: 'Error fetching game data' });
   }
 
   const target = {
@@ -141,7 +141,7 @@ const guess = async (req, res) => {
   const guessNumber = guesses.length + 1;
 
   if (guessNumber > maxGuesses) {
-    return res.status(403).json({ error: "out of guesses" })
+    return res.status(403).json({ error: 'out of guesses' });
   }
 
   const guessLastFmInfo = await LastFm.getAlbumInfo(mbid, artist, album);
@@ -224,11 +224,11 @@ const getTarget = async (req, res) => {
   const targetDoc = {
     artist: target.artist,
     album: target.album,
-    art: targetLastFmInfo.album.image.at(-1)["#text"]
+    art: targetLastFmInfo.album.image.at(-1)['#text'],
   };
 
   return res.json(targetDoc);
-}
+};
 
 module.exports = {
   gamePage,
