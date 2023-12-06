@@ -273,7 +273,7 @@ form {
 
 #searchOptionList {
     position: absolute;
-    top: 100%;
+    top: calc(100% + 2px);
 
     list-style: none;
     padding: 0;
@@ -294,13 +294,16 @@ form {
     color: var(--text);
 }
 
+.searchOption:hover {
+    border: none;
+}
+
 #actionList {
     display: flex;
     flex-flow: column-reverse nowrap;
     justify-content: flex-end;
 
     height: 100%;
-    overflow: scroll;
 }
 
 .guess {
@@ -496,7 +499,7 @@ form {
     grid-template-areas: 
     "image name"
     "image artist";
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: auto 2fr;
     grid-template-rows: auto auto;
 
     gap: 1em;
@@ -504,7 +507,7 @@ form {
 
 #albumDisplay > img {
     grid-area: image;
-    width: 100%;
+    width: 75px;
     margin: 10px;
 }
 #albumDisplay > h2 {
@@ -547,9 +550,12 @@ form {
 
 /* web */
 @media screen and (min-width: 426px) {
+    #main-header {
+        font-size: 5rem;
+    }
+
     h1 {
         text-align: center;
-        font-size: 5rem;
     }
 
     #tagline {
@@ -583,6 +589,8 @@ form {
 
     #content {
         align-self: center;
+        width: 100%;
+        max-width: 500px;
     }
 
     .mainForm, #message {
@@ -592,5 +600,35 @@ form {
     #message {
         align-self: center;
     }
+
+    #searchBarContainer {
+        align-self: center;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    #howToPlayWrapper {
+        justify-content: center;
+    }
+
+    #howToPlay {
+        max-width: 400px;
+    }
+
+
+    #endScreenWrapper {
+        justify-content: center;
+    }
+
+    #albumDisplay > img {
+        width: 150px;
+    }
+    #albumDisplay > h2 {
+        font-size: xx-large;
+    }
+    #albumDisplay > h3 {
+        font-size: x-large;
+    }
+
 }
 
