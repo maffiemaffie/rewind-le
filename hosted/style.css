@@ -449,7 +449,8 @@ form {
     content: "\f0d8";
 }
 
-#howToPlayWrapper {
+#howToPlayWrapper,
+#endScreenWrapper {
     position: fixed;
     z-index: 1000;
     top: 0;
@@ -458,19 +459,81 @@ form {
     width: 100vw;
     height: 100vh;
 
-    background: var(--background-50);
+    /* background: var(--background-50); */
+    background: linear-gradient(to top right, var(--background-50), var(--secondary-50));
 
     display: grid;
     align-content: center;
     justify-content: center;
 }
 
-#howToPlay {
+#howToPlay,
+#endScreen {
     padding: 1em;
     margin: 1em;
 
     background: linear-gradient(to top right, var(--background), var(--secondary));
     border: 1.5px solid var(--primary-50);
+}
+
+#endScreen {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 5px;
+}
+
+#endScreen > .guess {
+    background: none;
+    box-shadow: none;
+}
+
+#albumDisplay {
+    display: grid;
+    grid-template-areas: 
+    "image name"
+    "image artist";
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: auto auto;
+
+    gap: 1em;
+}
+
+#albumDisplay > img {
+    grid-area: image;
+    width: 100%;
+}
+#albumDisplay > h2 {
+    grid-area: name;
+    color: var(--primary);
+}
+#albumDisplay > h3 {
+    grid-area: artist;
+}
+
+#endScreen > button {
+    border: none;
+    background: none;
+    color: var(--text);
+    font-family: 'Questrial', Arial, Helvetica, sans-serif;
+    font-size: medium;
+    padding: 0;
+}
+
+#endScreen > a,
+#endScreen > button {
+    text-align: center;
+    background-color: transparent;
+    color: var(--text);
+    padding: 0.5em 1em;
+    border-radius: 100px;
+    border: 1.5px solid var(--text);
+
+    font-size: large;
+}
+
+#endScreen > a {
+    color: var(--primary);
+    border-color: var(--primary);
 }
 
 /* web */
