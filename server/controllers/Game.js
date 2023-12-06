@@ -224,7 +224,7 @@ const getTarget = async (req, res) => {
   const targetDoc = {
     artist: target.artist,
     album: target.album,
-    art: targetLastFmInfo.album.image.find(image => image.size = "large")["#text"]
+    art: targetLastFmInfo.album.image.at(-1)["#text"]
   };
 
   return res.json(targetDoc);
