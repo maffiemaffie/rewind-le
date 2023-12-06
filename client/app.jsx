@@ -208,7 +208,7 @@ const handleGameData = (data) => {
         document.getElementById('endScreenWrapper').classList.remove("hidden");
     
         helper.sendGet('/play/target', {}, (target) => {
-            if (guesses[guesses.at(-1)].isTarget) {
+            if (guesses.at(-1)?.isTarget) {
                 ReactDOM.render(<WinScreen guess={guesses.at(-1)} target={target}></WinScreen>,
                 document.getElementById('endScreenWrapper'));
             } else {

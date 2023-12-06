@@ -56,7 +56,7 @@ const createNewGame = async (req, res) => {
   let validGuesses;
   
   try {
-    validGuesses = await collectValidTopAlbums(req.session.account.lastFmAccount);
+    validGuesses = await collectValidTopAlbums(req.session.account.lastFm);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Error fetching game data" });

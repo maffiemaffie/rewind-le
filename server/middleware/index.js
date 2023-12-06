@@ -22,14 +22,14 @@ const requiresSecure = (req, res, next) => {
 const bypassSecure = (req, res, next) => next();
 
 const requiresNoLastFm = (req, res, next) => {
-  if (req.session.account.lastFmAccount) {
+  if (req.session.account.lastFm) {
     return res.redirect('/play');
   }
   return next();
 };
 
 const requiresLastFm = (req, res, next) => {
-  if (!req.session.account.lastFmAccount) {
+  if (!req.session.account.lastFm) {
     return res.redirect('/connectLastFm');
   }
   return next();
