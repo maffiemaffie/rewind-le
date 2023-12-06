@@ -87,6 +87,8 @@ const handleGuessData = (data) => {
         document.querySelector('#searchBar > input').setAttribute("disabled", "");
     
         helper.sendGet('/play/target', {}, (target) => {
+            document.getElementById('endScreenWrapper').classList.remove("hidden");
+
             if (data.isTarget) {
                 ReactDOM.render(<WinScreen guess={data} target={target}></WinScreen>,
                 document.getElementById('endScreenWrapper'));
@@ -205,6 +207,7 @@ const handleGameData = (data) => {
 
     if (guesses.length === data.maxGuesses || guesses[guesses.length - 1]?.isTarget) {
         document.querySelector('#searchBar > input').setAttribute("disabled", "");
+        document.getElementById('endScreenWrapper').classList.remove("hidden");
     
         helper.sendGet('/play/target', {}, (target) => {
             if (guesses[guesses.length - 1].isTarget) {
