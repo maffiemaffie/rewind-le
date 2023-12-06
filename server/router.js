@@ -21,6 +21,7 @@ const router = (app) => {
   app.get('/play', mid.requiresLogin, mid.requiresLastFm, controllers.Game.gamePage);
   app.get('/play/getGameInfo', mid.requiresLogin, mid.requiresLastFm, controllers.Game.getData);
   app.post('/play/guess', mid.requiresLogin, controllers.Game.guess);
+  app.get('/play/target', mid.requiresLogin, mid.requiresLastFm, controllers.Game.getTarget);
   // app.post('/play/hint', mid.requiresLogin, controllers.Game.hint);
 
   app.get('/maker', mid.requiresLogin, controllers.Domo.makerPage);

@@ -48,14 +48,54 @@ const Hint = (props) => {
     );
 }
 
+const WinScreen = (props) => {
+    return (
+        <div id="endScreen">
+            <Guess guess={props.guess}></Guess>
+            <div id="albumDisplay">
+                <img src={`/getLastFm?link=${props.target.art}`} alt={`${props.target.album} album art`} />
+                <h2>{props.target.album}</h2>
+                <h3>{props.target.artist}</h3>
+            </div>
+            <a>Go to stats</a>
+            <button>Share</button>
+        </div>
+    );
+}
+
+const LoseScreen = (props) => {
+    return (
+        <div id="endScreen">
+            <h2>Out of Guesses</h2>
+            <div id="albumDisplay">
+                <img src={`/getLastFm?link=${props.target.art}`} alt={`${props.target.album} album art`} />
+                <h2>{props.target.album}</h2>
+                <h3>{props.target.artist}</h3>
+            </div>
+            <a>Go to stats</a>
+        </div>
+    );
+}
+
 const handleGuessData = (data) => {
     const actionContainer = document.createElement('div');
     actionContainer.classList.add('action');
 
     document.getElementById('actionList').appendChild(actionContainer);
 
-    if (data.guessesLeft === 0 || data.isTarget) document.querySelector('#searchBar > input').setAttribute("disabled", "");
-
+    if (data.guessesLeft === 0 || data.isTarget) {
+        document.querySelector('#searchBar > input').setAttribute("disabled", "");
+    
+        helper.sendGet('/play/target', {}, (target) => {
+            if (data.isTarget) {
+                ReactDOM.render(<WinScreen guess={data} target={target}></WinScreen>,
+                document.getElementById('endScreenWrapper'));
+            } else {
+                ReactDOM.render(<LoseScreen target={target}></LoseScreen>,
+                document.getElementById('endScreenWrapper'));
+            }
+        });
+    }
     ReactDOM.render(<Guess guess={data}></Guess>, actionContainer);
 }
 
@@ -163,7 +203,19 @@ const handleGameData = (data) => {
         document.getElementById('searchBarContainer')
     );
 
-    if (guesses.length === data.maxGuesses) document.querySelector('#searchBar > input').setAttribute("disabled", "");
+    if (guesses.length === data.maxGuesses || guesses[guesses.length - 1]?.isTarget) {
+        document.querySelector('#searchBar > input').setAttribute("disabled", "");
+    
+        helper.sendGet('/play/target', {}, (target) => {
+            if (guesses[guesses.length - 1].isTarget) {
+                ReactDOM.render(<WinScreen guess={guesses[guesses.length - 1]} target={target}></WinScreen>,
+                document.getElementById('endScreenWrapper'));
+            } else {
+                ReactDOM.render(<LoseScreen target={target}></LoseScreen>,
+                document.getElementById('endScreenWrapper'));
+            }
+        });
+    }
 }
 
 const closeHowToPlay = (e) => {

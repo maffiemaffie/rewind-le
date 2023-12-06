@@ -204,9 +204,36 @@ const guess = async (req, res) => {
   return res.json(guessDoc);
 };
 
+const getTarget = async (req, res) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const query = { createdDate: { $gte: today }, owner: req.session.account._id };
+  const game = await Game.findOne(query);
+
+  const {
+    target, guesses, maxGuesses,
+  } = game;
+
+  if (guesses.length < maxGuesses) {
+    // return res.status(403).json({ error: "game still in progress" })
+  }
+
+  const targetLastFmInfo = await LastFm.getAlbumInfo(target.mbid, target.artist, target.album);
+
+  const targetDoc = {
+    artist: target.artist,
+    album: target.album,
+    art: targetLastFmInfo.album.image.find(image => image.size = "large")["#text"]
+  };
+
+  return res.json(targetDoc);
+}
+
 module.exports = {
   gamePage,
   getData,
+  getTarget,
   guess,
   // hint,
 };
