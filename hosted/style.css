@@ -464,7 +464,7 @@ form {
 
     display: grid;
     align-content: center;
-    justify-content: center;
+    justify-content: stretch;
 }
 
 #howToPlay,
@@ -480,6 +480,10 @@ form {
     display: flex;
     flex-flow: column nowrap;
     gap: 5px;
+}
+
+#endScreen > h2 {
+    margin: 0;
 }
 
 #endScreen > .guess {
@@ -501,13 +505,18 @@ form {
 #albumDisplay > img {
     grid-area: image;
     width: 100%;
+    margin: 10px;
 }
 #albumDisplay > h2 {
     grid-area: name;
     color: var(--primary);
+    align-self: end;
+    margin: 0;
 }
 #albumDisplay > h3 {
     grid-area: artist;
+    align-self: start;
+    margin: 0;
 }
 
 #endScreen > button {
