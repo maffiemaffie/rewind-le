@@ -47,6 +47,27 @@ const Hint = (props) => {
 }
 
 const WinScreen = (props) => {
+    const stndrdth = (num) => {
+        if (num % 100 >= 10 && num % 100 <= 20) return "th"; // 11th, 12th, 13th
+        switch (num % 10) {
+            case 1:
+                return "st";
+            case 2:
+                return "nd";
+            case 3:
+                return "rd";
+            default:
+                return "th";
+        }
+    }
+
+    const shareResult = () => {
+        const text = `I successfully guessed my ${props.guess.rank.value}${stndrdth(props.guess.rank.value)} favorite album ${props.target.album} in today's Rewind.le!`;
+        navigator.clipboard.writeText(text);
+        document.getElementById('shareSuccess').classList.remove('hidden');
+        return;
+    }
+
     return (
         <div id="endScreen">
             <Guess guess={props.guess}></Guess>
@@ -56,7 +77,8 @@ const WinScreen = (props) => {
                 <h3>{props.target.artist}</h3>
             </div>
             <a>Go to stats</a>
-            <button>Share</button>
+            <button onClick={shareResult}>Share</button>
+            <p id='shareSuccess' className='hidden'>copied to your clipboard!</p>
         </div>
     );
 }
