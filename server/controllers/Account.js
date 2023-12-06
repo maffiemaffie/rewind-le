@@ -79,11 +79,12 @@ const confirmAccount = async (req, res) => {
   const filter = { _id: req.session.account._id };
   const update = { lastFmAccount: req.session.username };
 
-  const doc = await Account.findOneAndUpdate(filter, update, {
+  const account = await Account.findOneAndUpdate(filter, update, {
     new: true,
   });
 
-  req.session.account = doc;
+  req.session.account = Account.toAPI(account);
+
   delete req.session.username;
 
   res.json({ redirect: '/play' });
