@@ -203,13 +203,13 @@ const handleGameData = (data) => {
         document.getElementById('searchBarContainer')
     );
 
-    if (guesses.length === data.maxGuesses || guesses[guesses.length - 1]?.isTarget) {
+    if (guesses.length === data.maxGuesses || guesses.at(-1)?.isTarget) {
         document.querySelector('#searchBar > input').setAttribute("disabled", "");
         document.getElementById('endScreenWrapper').classList.remove("hidden");
     
         helper.sendGet('/play/target', {}, (target) => {
-            if (guesses[guesses.length - 1].isTarget) {
-                ReactDOM.render(<WinScreen guess={guesses[guesses.length - 1]} target={target}></WinScreen>,
+            if (guesses[guesses.at(-1)].isTarget) {
+                ReactDOM.render(<WinScreen guess={guesses.at(-1)} target={target}></WinScreen>,
                 document.getElementById('endScreenWrapper'));
             } else {
                 ReactDOM.render(<LoseScreen target={target}></LoseScreen>,
