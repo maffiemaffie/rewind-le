@@ -548,6 +548,10 @@ form {
     border-color: var(--primary);
 }
 
+#shareSuccess {
+    color: var(--accent);
+}
+
 /* web */
 @media screen and (min-width: 426px) {
     #main-header {
