@@ -24,7 +24,7 @@ const router = (app) => {
   app.get('/play/target', mid.requiresLogin, mid.requiresLastFm, controllers.Game.getTarget);
   // app.post('/play/hint', mid.requiresLogin, controllers.Game.hint);
 
-  // app.get('/stats', mid.requiresLogin, controllers.Game.statsPage);
+  app.get('/stats', mid.requiresLogin, controllers.Game.statsPage);
   app.get('/getStats', mid.requiresLogin, controllers.Game.getStats);
 
   app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
