@@ -552,6 +552,50 @@ form {
     color: var(--accent);
 }
 
+#allTimeStats {
+    display: grid;
+    grid-template-areas: 
+    "breakdown-title winrate-title"
+    "breakdown winrate";
+
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+}
+
+#breakdownTitle {
+    grid-area: breakdown-title;
+}
+#breakdown {
+    grid-area: breakdown;
+}
+#winrateTitle {
+    grid-area: winrate-title;
+}
+#winRate {
+    grid-area: winrate;
+    position: relative;
+
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 200px;
+}
+
+#winRate::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    /* background: conic-gradient(var(--primary) var(--winrate), transparent var(--winrate)); */
+    background: radial-gradient(transparent 60%, var(--primary) 60%);
+    content: "";
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+}
+
 /* web */
 @media screen and (min-width: 426px) {
     #main-header {

@@ -12,14 +12,16 @@ const AllTimeStats = (props) => {
     </li>
     });
 
+    const rate = Math.floor(props.allTime.wins * 100 / (props.allTime.losses + props.allTime.wins));
+
     return (
         <div id='allTimeStats'>
-            <h2>Won in _ guesses:</h2>
+            <h2 id='breakdownTitle'>Won in _ guesses:</h2>
             <ol id='breakdown'>
                 {breakdown}
             </ol>
-            <h2>Win Rate</h2>
-            <div id='winRate'>{Math.floor(props.allTime.wins * 100 / (props.allTime.losses + props.allTime.wins))}%</div>
+            <h2 id='winrateTitle'>Win Rate</h2>
+            <div id='winRate' style={{'--winrate': `${rate * 3.6}deg`}}>{rate}%</div>
         </div>
     );
 };
