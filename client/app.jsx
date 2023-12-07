@@ -121,6 +121,7 @@ const handleGuessData = (data) => {
         });
     }
     ReactDOM.render(<Guess guess={data}></Guess>, actionContainer);
+    document.querySelector('#searchBar > input').removeAttribute('disabled');
 }
 
 const submitGuess = (artist, album, mbid) => {
@@ -143,7 +144,9 @@ const handleSearchBarSubmit = (e) => {
         document.getElementById('searchBarContainer')
     );
 
-    document.querySelector('#searchBar > input').value = "";
+    const searchBar = document.querySelector('#searchBar > input');
+    searchBar.value = "";
+    searchBar.setAttribute("disabled", "");
 
     submitGuess(artist, album, id);
 

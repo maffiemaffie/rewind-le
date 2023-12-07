@@ -229,5 +229,90 @@ GameSchema.statics.toAPI = (doc) => ({
   actions: doc.actions.sort((a, b) => a.actionNumber - b.actionNumber),
 });
 
+const BreakdownCategorySchema = new mongoose.Schema({
+  guesses: {
+    type: Number,
+    required: true,
+  },
+  frequency: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+});
+
+const AllTimeStatsSchema = new mongoose.Schema({
+  wins: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  losses: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  breakdown: {
+    type: [BreakdownCategorySchema],
+    required: true,
+  },
+});
+
+const CompletedGameSchema = new mongoose.Schema({
+  date: {
+    type: String,
+    required: true,
+  },
+  target: {
+    type: TargetSchema,
+    required: true,
+  },
+  outcome: {
+    type: String,
+    enum: ['won', 'lost'],
+    required: true,
+  },
+  guesses: {
+    type: [GuessSchema],
+    required: true,
+    default: [],
+  },
+  hints: {
+    type: [HintSchema],
+    required: true,
+    default: [],
+  },
+  actions: {
+    type: [ActionContainerSchema],
+    required: true,
+    default: [],
+  },
+});
+
+const StatsSchema = new mongoose.Schema({
+  allTime: {
+    type: AllTimeStatsSchema,
+    required: true,
+  },
+  completedGames: {
+    type: [CompletedGameSchema],
+    required: true,
+    default: [],
+  },
+  owner: {
+    type: mongoose.Schema.ObjectId,
+    required: true,
+    ref: 'Account',
+  },
+});
+
+StatsSchema.statics.toAPI = (doc) => ({
+  allTime: doc.allTime,
+  completedGames: doc.completedGames,
+});
+
 const GameModel = mongoose.model('Game', GameSchema);
-module.exports = GameModel;
+const StatsModel = mongoose.model('Stats', StatsSchema);
+
+module.exports.Game = GameModel;
+module.exports.Stats = StatsModel;

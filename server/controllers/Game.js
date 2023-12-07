@@ -2,11 +2,15 @@ const models = require('../models');
 const LastFm = require('./LastFm');
 const MusicBrainz = require('./MusicBrainz');
 
-const { Game } = models;
+const { Game, Stats } = models;
 
 const gamePage = (req, res) => {
   res.render('app');
 };
+
+const statsPage = (req, res) => {
+  res.render('stats');
+}
 
 const collectValidTopAlbums = async (lastFmUsername) => {
   const validGuesses = [];
@@ -81,10 +85,18 @@ const createNewGame = async (req, res) => {
     return res.status(500).json({ error: "Error fetching game data" });
   }
 
+  let trackCount;
+  try {
+    trackCount = targetAlbumInfo.album.tracks.track.length;
+  } catch {
+    console.log(targetAlbumInfo);
+    return res.status(500).json({ error: "Error fetching game data" });
+  }
+
   const target = {
     album: targetAlbum.album,
     artist: targetAlbum.artist,
-    trackCount: targetAlbumInfo.album.tracks.track.length,
+    trackCount,
     rank: targetAlbum.rank,
     year: mbAlbumInfo.date.split('-')[0],
     mbid: targetAlbum.mbid,
@@ -135,7 +147,7 @@ const guess = async (req, res) => {
   const game = await Game.findOne(query);
 
   const {
-    target, validGuesses, guesses, actions, maxGuesses,
+    target, validGuesses, guesses, hints, actions, maxGuesses, createdDate
   } = game;
 
   const guessNumber = guesses.length + 1;
@@ -188,7 +200,7 @@ const guess = async (req, res) => {
       result: getResult(rank, target.rank),
       closeness: getCloseness(target.rank, rank, 5),
     },
-    guessesLeft: maxGuesses - (guesses.length + 1),
+    guessesLeft: maxGuesses - guessNumber,
   };
 
   guesses.push(guessDoc);
@@ -200,6 +212,35 @@ const guess = async (req, res) => {
     },
   });
   game.save();
+
+  if (guessNumber === maxGuesses || rank === target.rank) {
+    const statsQuery = { owner: req.session.account._id };
+    const stats = await Stats.findOne(statsQuery);
+
+    const { allTime, completedGames } = stats;
+
+    const date = `${createdDate.getFullYear()}-${createdDate.getMonth() + 1}-${createdDate.getDate()}`;
+    const outcome = rank === target.rank ? "won" : "lost";
+
+    if (outcome === "won") {
+      allTime.wins++;
+      allTime.breakdown.find(guessCount => guessCount.guesses === guessNumber).frequency++;
+    } else {
+      allTime.losses++;
+    }
+
+    const completedGame = {
+      date,
+      target,
+      outcome,
+      guesses,
+      hints,
+      actions,
+    };
+
+    completedGames.push(completedGame);
+    stats.save();
+  }
 
   return res.json(guessDoc);
 };
@@ -230,10 +271,19 @@ const getTarget = async (req, res) => {
   return res.json(targetDoc);
 }
 
+const getStats = async (req, res) => {
+  const statsQuery = { owner: req.session.account._id };
+  const stats = await Stats.findOne(statsQuery);
+
+  return res.json(Stats.toAPI(stats));
+}
+
 module.exports = {
   gamePage,
   getData,
   getTarget,
   guess,
   // hint,
+  statsPage,
+  getStats,
 };

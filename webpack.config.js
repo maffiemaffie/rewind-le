@@ -6,6 +6,7 @@ module.exports = {
         linkAccount: './client/linkAccount.jsx',
         search: './client/search.jsx',
         login: './client/login.jsx',
+        stats: './client/stats.jsx',
     },
     module: {
         rules: [
