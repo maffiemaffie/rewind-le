@@ -8,6 +8,10 @@ const gamePage = (req, res) => {
   res.render('app');
 };
 
+const statsPage = (req, res) => {
+  res.render('stats');
+}
+
 const collectValidTopAlbums = async (lastFmUsername) => {
   const validGuesses = [];
   let currentPage = 0;
@@ -269,7 +273,7 @@ const getTarget = async (req, res) => {
 
 const getStats = async (req, res) => {
   const statsQuery = { owner: req.session.account._id };
-  const stats = await Game.findOne(statsQuery);
+  const stats = await Stats.findOne(statsQuery);
 
   return res.json(Stats.toAPI(stats));
 }
@@ -280,5 +284,6 @@ module.exports = {
   getTarget,
   guess,
   // hint,
+  statsPage,
   getStats,
 };
