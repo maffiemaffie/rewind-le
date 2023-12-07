@@ -24,10 +24,8 @@ const router = (app) => {
   app.get('/play/target', mid.requiresLogin, mid.requiresLastFm, controllers.Game.getTarget);
   // app.post('/play/hint', mid.requiresLogin, controllers.Game.hint);
 
-  app.get('/maker', mid.requiresLogin, controllers.Domo.makerPage);
-  app.post('/maker', mid.requiresLogin, controllers.Domo.makeDomo);
-
-  app.get('/search', mid.requiresLogin, controllers.Domo.searchPage);
+  // app.get('/stats', mid.requiresLogin, controllers.Game.statsPage);
+  app.get('/getStats', mid.requiresLogin, controllers.Game.getStats);
 
   app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
 };

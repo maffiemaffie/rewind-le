@@ -1,6 +1,6 @@
 const models = require('../models');
 
-const { Account } = models;
+const { Account, Stats } = models;
 const LastFm = require('./LastFm');
 
 const loginPage = (req, res) => res.render('login');
@@ -29,6 +29,25 @@ const login = (req, res) => {
   });
 };
 
+const createNewStats = (req, res) => {
+  const owner = req.session.account._id;
+  const breakdown = [];
+  for (let i = 1; i <= 10; i++) {
+    breakdown.push({ guesses: i, frequency: 0 });
+  }
+  const statsDoc = {
+    allTime: {
+      wins: 0,
+      losses: 0,
+      breakdown,
+    },
+    completedGames: [],
+    owner,
+  };
+
+  return new Stats(statsDoc);
+}
+
 const signup = async (req, res) => {
   const username = `${req.body.username}`;
   const pass = `${req.body.pass}`;
@@ -46,7 +65,12 @@ const signup = async (req, res) => {
     const hash = await Account.generateHash(pass);
     const newAccount = new Account({ username, password: hash });
     await newAccount.save();
+
     req.session.account = Account.toAPI(newAccount);
+
+    const newStats = createNewStats(req, res);
+    await newStats.save();
+
     return res.status(201).json({ redirect: '/connectLastFm' });
   } catch (err) {
     console.log(err);
