@@ -6,35 +6,15 @@
   <link rel="stylesheet" type="text/css" href="/assets/style.css"/>
 </head>
 <body>
-  <style>
-    .correct { color: green; }
-    .closeness-far { color: slategray; }
-    .closeness-close { color: yellow; }
-
-    .tooLow::after { content: " too low"; }
-    .tooHigh::after { content: " too high"; }
-
-    #howToPlayWrapper { 
-      width: 100vw; 
-      height: 100vh; 
-      position: fixed; 
-      top: 0; 
-      background: rgba(0, 0, 0, 0.5);
-    }
-
-    #howToPlay {
-      background-color: white;
-    }
-  </style>
   <header>
     <nav>
       <button class="navButton" id="settingsButton">settings</button>
       <a href='/play' class="site-title">Rewind.le</a>
-      <a class="navButton" id="statsButton">Stats</a>
+      <a href='/stats' class="navButton" id="statsButton">Stats</a>
     </nav>
   </header>
 
-  <section id="allTimeStats">
+  <section id="allTimeStatsWrapper">
     
   </section>
 
