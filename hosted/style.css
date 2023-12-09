@@ -560,40 +560,76 @@ form {
 
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto auto;
+
+    gap: 10px;
 }
 
 #breakdownTitle {
     grid-area: breakdown-title;
+    font-size: large;
 }
 #breakdown {
     grid-area: breakdown;
+    padding: 0;
+    margin: 0;
 }
+
+#breakdown > li {
+    height: 1em;
+    display: flex;
+    flex-flow: row nowrap;
+    counter-increment: bulletNumber;
+}
+
+#breakdown > li::before {
+    content: counter(bulletNumber);
+    width: 4ch;
+    text-align: right;
+}
+
+#breakdown > li > svg {
+    fill: var(--primary);
+    padding: 0 1ch;
+    flex-grow: 1;
+}
+
 #winrateTitle {
+    font-size: large;
     grid-area: winrate-title;
 }
 #winRate {
     grid-area: winrate;
-    position: relative;
+    width: 100%;
+    margin: 0;
 
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-    justify-content: center;
-    width: 200px;
-    height: 200px;
+    position: relative;
 }
 
-#winRate::before {
+#winRate > svg {
+    padding: 10px;
+    overflow: visible;
+    stroke-width: 10px;
+    fill: none;
+
+    box-sizing: border-box;
+    rotate: 90deg;
+}
+
+#lossArc {
+    stroke: var(--secondary);
+}
+
+#winArc {
+    stroke: var(--primary);
+}
+
+#winRate > figcaption {
     position: absolute;
-    top: 0;
-    left: 0;
-    display: block;
-    /* background: conic-gradient(var(--primary) var(--winrate), transparent var(--winrate)); */
-    background: radial-gradient(transparent 60%, var(--primary) 60%);
-    content: "";
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    font-size: x-large;
 }
 
 /* web */
