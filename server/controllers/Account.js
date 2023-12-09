@@ -29,7 +29,7 @@ const login = (req, res) => {
   });
 };
 
-const createNewStats = (req, res) => {
+const createNewStats = (req) => {
   const owner = req.session.account._id;
   const breakdown = [];
   for (let i = 1; i <= 10; i++) {
@@ -46,7 +46,7 @@ const createNewStats = (req, res) => {
   };
 
   return new Stats(statsDoc);
-}
+};
 
 const signup = async (req, res) => {
   const username = `${req.body.username}`;
