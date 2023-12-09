@@ -7,6 +7,7 @@ module.exports = {
         search: './client/search.jsx',
         login: './client/login.jsx',
         stats: './client/stats.jsx',
+        settings: './client/settings.jsx',
     },
     module: {
         rules: [
