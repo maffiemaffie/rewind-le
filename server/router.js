@@ -25,7 +25,13 @@ const router = (app) => {
   // app.post('/play/hint', mid.requiresLogin, controllers.Game.hint);
 
   app.get('/stats', mid.requiresLogin, controllers.Game.statsPage);
-  app.get('/getStats', mid.requiresLogin, controllers.Game.getStats);
+  app.post('/getStats', mid.requiresLogin, controllers.Game.getStats);
+
+  // app.get('/settings', mid.requiresLogin, controller.Settings.settingsPage);
+  // app.get('/settings/user/updatePassword', mid.requiresSecure, mid.requiresLogin, controller.Account.changePassword);
+  // app.post('/premium/enroll', mid.requiresLogin, mid.requiresSecure, controllers.Account.activatePremium);
+  // app.post('/premium/cancel', mid.requiresLogin, controllers.Account.cancelPremium);
+  app.get('/logout', mid.requiresLogin, controllers.Account.logout);
 
   app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
 };
