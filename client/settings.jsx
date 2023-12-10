@@ -5,7 +5,30 @@ const { EnterUsernameWindow } = require('./linkAccount.jsx');
 
 let username;
 
+const handleUpdatePassword = (data) => {
+  if (!data.error) {
+    document.querySelector('#updatePassword > .textField').setAttribute('disabled', '');
+    document.querySelector('#updatePassword > .editButton').setAttribute('disabled', '');
+  }
+}
+
 const AccountWindow = (props) => {
+  const changePassword = (e) => {
+    document.querySelector('#updatePassword > .textField').removeAttribute('disabled');
+    e.target.setAttribute('disabled', '');
+  };
+
+  const submitChangePassword = (e) => {
+    e.preventDefault();
+
+    const newPassword = document.getElementById('passwordField').value;
+    const oldPassword = document.getElementById('oldPasswordField').value;
+
+    helper.sendPost('/settings/user/updatePassword', { newPassword, oldPassword }, handleUpdatePassword);
+
+    return false;
+  }
+
   return (
     <div id='accountWindow'>
       <h2>Account</h2>
@@ -18,7 +41,8 @@ const AccountWindow = (props) => {
         </fieldset>
         <input type='button' className='editButton' value='Edit' disabled/>
       </form>
-      <form id='updatePassword'>
+      <form id='updatePassword'
+        onSubmit={submitChangePassword}>
         <fieldset className='textField' disabled>
           <legend className='hidden'>Password</legend>
           <label htmlFor='passwordField'>New Password</label>
@@ -27,7 +51,7 @@ const AccountWindow = (props) => {
           <input type='password' id='oldPasswordField' name='oldPassword'/>
           <input type='submit' id='submitChangePassword' value='Save Changes'/>
         </fieldset>
-        <input type='button' className='editButton' value='Change Password'/>
+        <input type='button' className='editButton' onClick={changePassword} value='Change Password'/>
       </form>
     </div>
   );
