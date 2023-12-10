@@ -124,6 +124,29 @@ const getInfo = (req, res) => {
   res.json({ username: req.session.account.username });
 }
 
+const changePassword = async (req, res) => {
+  const oldPassword = `${req.body.oldPassword}`;
+  const newPassword = `${req.body.newPassword}`;
+
+  if (!oldPassword || !newPassword) {
+    return res.status(400).json({ error: 'All fields are required!' });
+  }
+
+  return Account.authenticate(req.session.account.username, oldPassword, async (err, account) => {
+    if (err || !account) {
+      return res.status(403).json({ error: 'Wrong password!' });
+    }
+
+    const hash = await Account.generateHash(newPassword);
+    account.password = hash;
+    await account.save();
+
+    req.session.account = Account.toAPI(account);
+
+    return res.status(204).send();
+  });
+}
+
 module.exports = {
   loginPage,
   login,
@@ -134,4 +157,5 @@ module.exports = {
   confirmAccount,
   removeAccount,
   getInfo,
+  changePassword,
 };
