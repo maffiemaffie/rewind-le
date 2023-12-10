@@ -90,3 +90,8 @@ const init = () => {
 }
 
 window.onload = init;
+
+module.exports = {
+    EnterUsernameWindow,
+    ConfirmAccountWindow,
+};

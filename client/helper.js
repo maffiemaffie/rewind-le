@@ -19,7 +19,8 @@ const sendPost = async (url, data, handler) => {
     body: JSON.stringify(data),
   });
 
-  const result = await response.json();
+  let result = {};
+  if (response.status !== 204) result = await response.json();
   document.getElementById('message').classList.add('hidden');
 
   if(result.redirect) {

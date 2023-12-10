@@ -78,7 +78,7 @@ const WinScreen = (props) => {
                 <h2>{props.target.album}</h2>
                 <h3>{props.target.artist}</h3>
             </div>
-            <a>Go to stats</a>
+            <a href='/stats'>Go to stats</a>
             <button onClick={shareResult}>Share</button>
             <p id='shareSuccess' className='hidden'>copied to your clipboard!</p>
         </div>
@@ -94,7 +94,7 @@ const LoseScreen = (props) => {
                 <h2>{props.target.album}</h2>
                 <h3>{props.target.artist}</h3>
             </div>
-            <a>Go to stats</a>
+            <a href='/stats'>Go to stats</a>
         </div>
     );
 }
