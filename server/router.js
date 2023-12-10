@@ -12,7 +12,7 @@ const router = (app) => {
 
   app.post('/signup', mid.requiresSecure, mid.requiresLogout, controllers.Account.signup);
 
-  app.get('/logout', mid.requiresLogin, controllers.Account.logout);
+  app.get('/accountInfo', mid.requiresLogin, controllers.Account.getInfo);
 
   app.get('/connectLastFm', mid.requiresSecure, mid.requiresNoLastFm, controllers.Account.linkAccountPage);
   app.post('/connectLastFm/setAccount', mid.requiresLogin, mid.requiresNoLastFm, controllers.Account.setAccount);
