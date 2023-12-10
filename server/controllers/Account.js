@@ -114,6 +114,12 @@ const confirmAccount = async (req, res) => {
   res.json({ redirect: '/play' });
 };
 
+const removeAccount = (req, res) => {
+  delete req.session.account.lastFm;
+
+  res.status(204).send();
+}
+
 module.exports = {
   loginPage,
   login,
@@ -122,4 +128,5 @@ module.exports = {
   linkAccountPage,
   setAccount,
   confirmAccount,
+  removeAccount,
 };
