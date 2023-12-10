@@ -6,7 +6,7 @@ const { EnterUsernameWindow } = require('./linkAccount.jsx');
 const AccountWindow = (props) => {
   return (
     <div id='accountWindow'>
-      <h2>Acconunt</h2>
+      <h2>Account</h2>
       <form id='updateUsername'>
         <fieldset className='textField' disabled>
           <legend className='hidden'>Username:</legend>
@@ -19,13 +19,13 @@ const AccountWindow = (props) => {
       <form id='updatePassword'>
         <fieldset className='textField' disabled>
           <legend className='hidden'>Password</legend>
-          <label htmlFor='passwordField'>Password</label>
+          <label htmlFor='passwordField'>New Password</label>
           <input type='password' id='passwordField' name='password'/>
           <label htmlFor='oldPasswordField'>Old Password</label>
           <input type='password' id='oldPasswordField' name='oldPassword'/>
           <input type='submit' id='submitChangePassword' value='Save Changes'/>
         </fieldset>
-        <input type='button' className='editButton' value='Edit'/>
+        <input type='button' className='editButton' value='Change Password'/>
       </form>
     </div>
   )
