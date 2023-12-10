@@ -3,6 +3,8 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 const { EnterUsernameWindow } = require('./linkAccount.jsx');
 
+let username;
+
 const AccountWindow = (props) => {
   return (
     <div id='accountWindow'>
@@ -11,7 +13,7 @@ const AccountWindow = (props) => {
         <fieldset className='textField' disabled>
           <legend className='hidden'>Username:</legend>
           <label htmlFor='usernameField'>Username</label>
-          <input type='text' id='usernameField' name='username'/>
+          <input type='text' id='usernameField' name='username' value={props.username}/>
           <input type='submit' id='submitChangeUsername' value='Save Changes'/>
         </fieldset>
         <input type='button' className='editButton' value='Edit' disabled/>
@@ -28,8 +30,8 @@ const AccountWindow = (props) => {
         <input type='button' className='editButton' value='Change Password'/>
       </form>
     </div>
-  )
-}
+  );
+};
 
 const PremiumWindow = (props) => {
   return (
@@ -37,18 +39,20 @@ const PremiumWindow = (props) => {
       <h2>Get Premium</h2>
       <button id='buyPremium'>Buy</button>
     </div>
-  )
-}
+  );
+};
 
 const LastFmWindow = (props) => {
   return (
     <div id='content'>
       <EnterUsernameWindow/>
     </div>
-  )
-}
+  );
+};
 
-init = () => {
+init = async () => {
+  await helper.sendGet('/accountInfo', {}, data => username = data.username);
+
   document.getElementById('lastFmTab').addEventListener('click', () => {
     helper.sendPost('/connectLastFm/removeAccount', {});
     ReactDOM.render(
@@ -59,7 +63,7 @@ init = () => {
 
   document.getElementById('accountTab').addEventListener('click', () => {
     ReactDOM.render(
-      <AccountWindow/>,
+      <AccountWindow username={username}/>,
       document.getElementById('activePage')
     );
   });
@@ -72,9 +76,9 @@ init = () => {
   });
 
   ReactDOM.render(
-    <AccountWindow/>,
+    <AccountWindow username={username}/>,
     document.getElementById('activePage')
   );
-}
+};
 
 window.onload = init;

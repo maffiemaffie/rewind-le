@@ -120,6 +120,10 @@ const removeAccount = (req, res) => {
   res.status(204).send();
 }
 
+const getInfo = (req, res) => {
+  res.json({ username: req.session.account.username });
+}
+
 module.exports = {
   loginPage,
   login,
@@ -129,4 +133,5 @@ module.exports = {
   setAccount,
   confirmAccount,
   removeAccount,
+  getInfo,
 };
