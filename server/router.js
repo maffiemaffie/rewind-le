@@ -17,6 +17,7 @@ const router = (app) => {
   app.get('/connectLastFm', mid.requiresSecure, mid.requiresNoLastFm, controllers.Account.linkAccountPage);
   app.post('/connectLastFm/setAccount', mid.requiresLogin, mid.requiresNoLastFm, controllers.Account.setAccount);
   app.post('/connectLastFm/confirmAccount', mid.requiresLogin, mid.requiresNoLastFm, controllers.Account.confirmAccount);
+  app.post('/connectLastFm/removeAccount', mid.requiresLogin, controllers.Account.removeAccount);
 
   app.get('/play', mid.requiresLogin, mid.requiresLastFm, controllers.Game.gamePage);
   app.get('/play/getGameInfo', mid.requiresLogin, mid.requiresLastFm, controllers.Game.getData);
@@ -25,10 +26,10 @@ const router = (app) => {
   // app.post('/play/hint', mid.requiresLogin, controllers.Game.hint);
 
   app.get('/stats', mid.requiresLogin, controllers.Game.statsPage);
-  app.post('/getStats', mid.requiresLogin, controllers.Game.getStats);
+  app.get('/getStats', mid.requiresLogin, controllers.Game.getStats);
 
-  // app.get('/settings', mid.requiresLogin, controller.Settings.settingsPage);
-  // app.get('/settings/user/updatePassword', mid.requiresSecure, mid.requiresLogin, controller.Account.changePassword);
+  app.get('/settings', mid.requiresLogin, controllers.Settings.settingsPage);
+  // app.get('/settings/user/updatePassword', mid.requiresSecure, mid.requiresLogin, controllers.Account.changePassword);
   // app.post('/premium/enroll', mid.requiresLogin, mid.requiresSecure, controllers.Account.activatePremium);
   // app.post('/premium/cancel', mid.requiresLogin, controllers.Account.cancelPremium);
   app.get('/logout', mid.requiresLogin, controllers.Account.logout);
