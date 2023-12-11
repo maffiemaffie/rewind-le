@@ -117,7 +117,7 @@ const confirmAccount = async (req, res) => {
 const removeAccount = (req, res) => {
   delete req.session.account.lastFm;
 
-  res.status(204).send();
+  res.status(204).json({});
 }
 
 const getInfo = (req, res) => {
@@ -146,7 +146,7 @@ const changePassword = async (req, res) => {
 
     req.session.account = Account.toAPI(account);
 
-    return res.status(204).send();
+    return res.status(204).json({});
   });
 }
 
@@ -159,7 +159,7 @@ const activatePremium = async (req, res) => {
   await account.save();
   req.session.account = Account.toAPI(account);
 
-  return res.status(204).send();
+  return res.status(204).json({});
 }
 
 const cancelPremium = async (req, res) => {
@@ -171,7 +171,7 @@ const cancelPremium = async (req, res) => {
   await account.save();
   req.session.account = Account.toAPI(account);
 
-  return res.status(204).send();
+  return res.status(204).json({});
 }
 
 module.exports = {
