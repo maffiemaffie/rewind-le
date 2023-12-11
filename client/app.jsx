@@ -5,6 +5,7 @@ const ReactDOM = require('react-dom');
 let validGuesses = [];
 let hints = [];
 let guesses = [];
+let maxGuesses;
 
 const GameWindow = (props) => {
     const actions = props.actions.sort((a, b) => a.actionNumber - b.actionNumber).map(action => {
@@ -29,7 +30,7 @@ const Guess = (props) => {
 
     return (
         <div className='guess'>
-            <p className='guessNumber'>Guess {props.guess.guessNumber}:</p>
+            <p className='guessNumber'>Guess {props.guess.guessNumber} of {maxGuesses}:</p>
             <h2 className={`albumName closeness-${isTarget}`}>{props.guess.album}</h2>
             <h3 className={`artistName closeness-${props.guess.artist.closeness}`}>{props.guess.artist.value}</h3>
             <div className={`guessBlock year closeness-${props.guess.year.closeness} ${props.guess.year.result}`}>Released <span className='guessBlockValue'>{props.guess.year.value}</span></div>
@@ -218,6 +219,7 @@ const handleGameData = (data) => {
     guesses = data.guesses;
     hints = data.hints;
     validGuesses = data.validGuesses;
+    maxGuesses = data.maxGuesses;
 
     ReactDOM.render(
         <GameWindow actions={data.actions}></GameWindow>,
