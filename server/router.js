@@ -27,8 +27,8 @@ const router = (app) => {
 
   app.get('/settings', mid.requiresLogin, controllers.Settings.settingsPage);
   app.post('/settings/user/updatePassword', mid.requiresSecure, mid.requiresLogin, controllers.Account.changePassword);
-  // app.post('/premium/enroll', mid.requiresLogin, mid.requiresSecure, controllers.Account.activatePremium);
-  // app.post('/premium/cancel', mid.requiresLogin, controllers.Account.cancelPremium);
+  app.post('/premium/enroll', mid.requiresLogin, mid.requiresSecure, controllers.Account.activatePremium);
+  app.post('/premium/cancel', mid.requiresLogin, controllers.Account.cancelPremium);
   app.get('/logout', mid.requiresLogin, controllers.Account.logout);
 
   app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
