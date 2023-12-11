@@ -102,10 +102,13 @@ const createNewGame = async (req, res) => {
     mbid: targetAlbum.mbid,
   };
 
+  let maxGuesses = Math.ceil(Math.sqrt(validGuesses.length));
+  if (req.session.account.isPremiumUser) maxGuesses = Math.ceil(maxGuesses * 1.5);
+
   const gameDoc = {
     target,
     validGuesses,
-    maxGuesses: 10,
+    maxGuesses,
     owner: req.session.account._id,
   };
 
