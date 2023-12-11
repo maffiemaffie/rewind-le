@@ -164,6 +164,7 @@ const guess = async (req, res) => {
   }
 
   const guessLastFmInfo = await LastFm.getAlbumInfo(mbid, artist, album);
+  const guessMusicBrainzInfo = await MusicBrainz.getAlbumInfo(mbid);
 
   const getResult = (targetValue, guessValue) => {
     if (guessValue < targetValue) return 'tooLow';
@@ -179,10 +180,11 @@ const guess = async (req, res) => {
     return 'close';
   };
 
-  const trackCount = guessLastFmInfo.album.tracks.track.length || 1;
+  let trackCount = 1;
+  if (guessLastFmInfo.album.tracks) trackCount = guessLastFmInfo.album.tracks.track.length || 1;
+  else trackCount = guessMusicBrainzInfo.media[0]['track-count'];
   const { rank } = validGuesses.find((g) => (g.artist === artist && g.album === album));
 
-  const guessMusicBrainzInfo = await MusicBrainz.getAlbumInfo(mbid);
   const year = guessMusicBrainzInfo.date.split('-')[0];
   const guessesLeft = maxGuesses - guessNumber;
   const guessDoc = {

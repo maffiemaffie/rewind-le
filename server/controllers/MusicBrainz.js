@@ -23,7 +23,7 @@ const fetchMusicBrainz = async (endpoint, queryParams) => {
   return responseJson;
 };
 
-const getAlbumInfo = async (mbid) => fetchMusicBrainz(`/release/${mbid}`, {});
+const getAlbumInfo = async (mbid) => fetchMusicBrainz(`/release/${mbid}`, {inc: "media"});
 
 module.exports = {
   getAlbumInfo,
