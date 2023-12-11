@@ -160,7 +160,15 @@ const activatePremium = async (req, res) => {
 }
 
 const cancelPremium = async (req, res) => {
-  
+  const query = { _id: req.session._id };
+  const account = Account.findOne(query);
+
+  if (!account.isPremiumUser) return res.status(404).json({ error: "User is not a premium member" });
+  account.isPremiumUser = false;
+  await account.save();
+  req.session.account = Account.toAPI(account);
+
+  return res.status(204).send();
 }
 
 module.exports = {
