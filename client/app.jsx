@@ -10,12 +10,20 @@ let maxGuesses;
 const GameWindow = (props) => {
     const actions = props.actions.sort((a, b) => a.actionNumber - b.actionNumber).map(action => {
         if (action.action.type === "guess") {
-            return <Guess guess={guesses.find(guess => guess.guessNumber === action.action.number)}></Guess>;
+            return (
+                <div className='action'>
+                    <Guess guess={guesses.find(guess => guess.guessNumber === action.action.number)}></Guess>
+                </div>
+            );
         }
 
         if (action.action.type === "hint") {
-            return <Hint hint={hints.find(hint => hint.hintNumber === action.action.number)}></Hint>;
-        }
+            return (
+                <div className='action'>
+                    <Hint hint={hints.find(hint => hint.hintNumber === action.action.number)}></Hint>
+                </div>
+            );
+        };
     });
 
     return (
@@ -41,10 +49,16 @@ const Guess = (props) => {
 }
 
 const Hint = (props) => {
+    const labels = {
+        rank: "Rank",
+        year: "Released",
+        trackCount: "Track Account",
+    };
+
     return (
         <div className='hint'>
             <p className='hintNumber'>Hint {props.hint.hintNumber}:</p>
-            <div className={`guessBlock ${props.hint.attribute} correct`}>${props.hint.value}</div>
+            <div className={`guessBlock ${props.hint.attribute} correct`}>{labels[props.hint.attribute]} <span className='guessBlockValue'>{props.hint.value}</span></div>
         </div>
     );
 }
@@ -125,8 +139,29 @@ const handleGuessData = (data) => {
     document.querySelector('#searchBar > input').removeAttribute('disabled');
 }
 
+const handleHintData = (data) => {
+    if (data.error) return;
+
+    const actionContainer = document.createElement('div');
+    actionContainer.classList.add('action');
+
+    document.getElementById('actionList').appendChild(actionContainer);
+
+    ReactDOM.render(<Hint hint={data}/>, actionContainer);
+
+    const hintButton = document.getElementById('hintButton');
+    if (data.hintsLeft === 0) hintButton.setAttribute('disabled');
+    else hintButton.removeAttribute('disabled');
+    document.querySelector('#searchBar > input').removeAttribute('disabled');
+}
+
 const submitGuess = (artist, album, mbid) => {
+    document.getElementById('hintButton').setAttribute('disabled', '');
     helper.sendPost('/play/guess', {artist, album, mbid}, handleGuessData);
+}
+
+const submitHint = () => {
+    helper.sendPost('/play/hint', {}, handleHintData);
 }
 
 const handleSearchBarSubmit = (e) => {
@@ -221,6 +256,10 @@ const handleGameData = (data) => {
     validGuesses = data.validGuesses;
     maxGuesses = data.maxGuesses;
 
+    const hintButton = document.getElementById('hintButton');
+    if (data.hintsLeft === 0) hintButton.setAttribute('disabled', '');
+    else hintButton.removeAttribute('disabled');
+
     ReactDOM.render(
         <GameWindow actions={data.actions}></GameWindow>,
         document.getElementById('content')
@@ -259,6 +298,7 @@ const closeHowToPlay = (e) => {
 const init = () => {
     const howToPlay = document.getElementById('howToPlayWrapper');
     document.getElementById('howToPlayButton').addEventListener('click', () => { howToPlay.classList.remove('hidden') });
+    document.getElementById('hintButton').addEventListener('click', submitHint);
     window.addEventListener('click', closeHowToPlay);
 
     helper.sendGet('/play/getGameInfo', {}, handleGameData);

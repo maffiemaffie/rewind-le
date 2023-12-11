@@ -36,6 +36,16 @@ const AccountSchema = new mongoose.Schema({
   lastFmAccount: {
     type: String,
   },
+  isPremiumUser: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+  hintsOwned: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
   createdDate: {
     type: Date,
     default: Date.now,
@@ -46,6 +56,8 @@ const AccountSchema = new mongoose.Schema({
 AccountSchema.statics.toAPI = (doc) => ({
   username: doc.username,
   lastFm: doc.lastFmAccount,
+  isPremiumUser: doc.isPremiumUser,
+  hintsOwned: doc.hintsOwned,
   _id: doc._id,
 });
 

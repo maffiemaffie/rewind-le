@@ -2,7 +2,7 @@ const models = require('../models');
 const LastFm = require('./LastFm');
 const MusicBrainz = require('./MusicBrainz');
 
-const { Game, Stats } = models;
+const { Game, Stats, Account } = models;
 
 const gamePage = (req, res) => {
   res.render('app');
@@ -102,10 +102,17 @@ const createNewGame = async (req, res) => {
     mbid: targetAlbum.mbid,
   };
 
+  let maxGuesses = Math.ceil(Math.sqrt(validGuesses.length));
+  if (req.session.account.isPremiumUser) maxGuesses = Math.ceil(maxGuesses * 1.5);
+
+  const hintsLeft = Math.min(req.session.account.hintsOwned, 3);
+
   const gameDoc = {
     target,
     validGuesses,
-    maxGuesses: 10,
+    maxGuesses,
+    guessesLeft: maxGuesses,
+    hintsLeft: hintsLeft,
     owner: req.session.account._id,
   };
 
@@ -177,6 +184,7 @@ const guess = async (req, res) => {
 
   const guessMusicBrainzInfo = await MusicBrainz.getAlbumInfo(mbid);
   const year = guessMusicBrainzInfo.date.split('-')[0];
+  const guessesLeft = maxGuesses - guessNumber;
   const guessDoc = {
     guessNumber,
     isTarget: rank === target.rank,
@@ -200,7 +208,7 @@ const guess = async (req, res) => {
       result: getResult(rank, target.rank),
       closeness: getCloseness(target.rank, rank, 5),
     },
-    guessesLeft: maxGuesses - guessNumber,
+    guessesLeft,
   };
 
   guesses.push(guessDoc);
@@ -211,6 +219,7 @@ const guess = async (req, res) => {
       number: guessNumber,
     },
   });
+  game.guessesLeft = guessesLeft;
   game.save();
 
   if (guessNumber === maxGuesses || rank === target.rank) {
@@ -245,6 +254,55 @@ const guess = async (req, res) => {
   return res.json(guessDoc);
 };
 
+const hint = async (req, res) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const query = { createdDate: { $gte: today }, owner: req.session.account._id };
+  const game = await Game.findOne(query);
+  if (game.hints.length === 3) return res.status(403).json({ error: "No more hints can be used this game" });
+
+  const account = await Account.findOne({ _id: req.session.account._id });
+  if (account.hintsOwned === 0) return res.status(403).json({ error: "No more hints owned" });
+
+  const hintNumber = game.hints.length + 1;
+
+  const { target, hints, actions } = game;
+  const attributes = ["year", "trackCount", "rank"];
+  for (usedHint of hints) {
+    attributes = attributes.filter(attr => attr !== usedHint.attribute);
+  }
+
+  const randomIndex = Math.floor(Math.random() * attributes.length);
+  const randomAttribute = attributes[randomIndex];
+
+  account.hintsOwned--;
+  await account.save();
+  req.session.account = Account.toAPI(account);
+
+  const hintsLeft = Math.min(3 - hintNumber, account.hintsOwned);
+  game.hintsLeft = hintsLeft;
+
+  const hintDoc = {
+    hintNumber: hints.length + 1,
+    attribute: randomAttribute,
+    value: target[randomAttribute],
+    hintsLeft
+  };
+  hints.push(hintDoc);
+  actions.push({
+    actionNumber: actions.length + 1,
+    action: {
+      type: 'hint',
+      number: hintNumber,
+    },
+  });
+
+  await game.save();
+
+  return res.json(hintDoc);
+}
+
 const getTarget = async (req, res) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -278,12 +336,25 @@ const getStats = async (req, res) => {
   return res.json(Stats.toAPI(stats));
 }
 
+const updateHints = async (req, hintsOwned) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const query = { createdDate: { $gte: today }, owner: req.session.account._id };
+  const game = await Game.findOne(query);
+
+  const hintsLeft = Math.min(hintsOwned, 3 - game.hints.length);
+  game.hintsLeft = hintsLeft;
+  await game.save();
+}
+
 module.exports = {
   gamePage,
   getData,
   getTarget,
   guess,
-  // hint,
+  hint,
   statsPage,
   getStats,
+  updateHints,
 };

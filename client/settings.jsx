@@ -4,6 +4,7 @@ const ReactDOM = require('react-dom');
 const { EnterUsernameWindow } = require('./linkAccount.jsx');
 
 let username;
+let hasPremium;
 
 const handleUpdatePassword = (data) => {
   if (!data.error) {
@@ -60,14 +61,77 @@ const AccountWindow = (props) => {
   );
 };
 
-const PremiumWindow = (props) => {
-  return (
-    <div id='premiumWindow'>
-      <h2>Get Premium</h2>
-      <button id='buyPremium'>Buy</button>
-    </div>
-  );
+const buyPremium = () => {
+  helper.sendPost('/premium/enroll', {}, () => {
+    hasPremium = true;
+    ReactDOM.render(
+      <PremiumWindow/>,
+      document.getElementById('activePage')
+    );
+  });
 };
+
+const cancelPremium = () => {
+  hasPremium = false;
+  helper.sendPost('/premium/cancel', {}, () => {
+    ReactDOM.render(
+      <PremiumWindow/>,
+      document.getElementById('activePage')
+    );
+  });
+};
+
+const PremiumWindow = (props) => {
+  const BuyPremiumWindow = (props) => {
+    return (
+      <div id='buyPremiumWindow'>
+        <h2>Get Premium</h2>
+        <button onClick={buyPremium} id='buyPremium'>Buy</button>
+      </div>
+    );
+  };
+
+  const CancelPremiumWindow = (props) => {
+    return (
+      <div id='cancelPremiumWindow'>
+        <h2>Welcome to <span className='site-title'>Rewind.le</span> Premium!</h2>
+        <button onClick={cancelPremium} id='cancelPremium'>Cancel Plan</button>
+      </div>
+    );
+  };
+
+  const BuyHintsWindow = (props) => {
+    const buyHints = (amount) => {
+      helper.sendPost('/premium/buyHints', { amount }, result => {
+        if (result.error) {
+          return document.getElementById('buyResult').innerText = "Purchase could not be made at this time.";
+        }
+        return document.getElementById('buyResult').innerText = "Hints puchased succesfully";
+      });
+    };
+
+    return (
+      <div id='buyHintsWindow'>
+        <h3>Buy Hints</h3>
+        <button onClick={() => buyHints(5)} className='buyHintButton' id='fiveHintsButton'>Buy Five Hints</button>
+        <button onClick={() => buyHints(3)} className='buyHintButton' id='threeHintsButton'>Buy Three Hints</button>
+        <button onClick={() => buyHints(1)} className='buyHintButton' id='oneHintButton'>Buy One Hint</button>
+        <p id='buyResult'></p>
+      </div>
+    )
+  }
+
+  if (hasPremium) return (
+  <div id='premiumWindow'>
+    <CancelPremiumWindow/>
+    <BuyHintsWindow/>
+  </div>);
+  return (
+  <div id='premiumWindow'>
+    <BuyPremiumWindow/>
+    <BuyHintsWindow/>
+  </div>);
+}
 
 const LastFmWindow = (props) => {
   return (
@@ -78,7 +142,11 @@ const LastFmWindow = (props) => {
 };
 
 init = async () => {
-  await helper.sendGet('/accountInfo', {}, data => username = data.username);
+  await helper.sendGet('/accountInfo', {}, data => {
+    console.log(data);
+    username = data.username;
+    hasPremium = data.hasPremium;
+  });
 
   document.getElementById('lastFmTab').addEventListener('click', () => {
     helper.sendPost('/connectLastFm/removeAccount', {});

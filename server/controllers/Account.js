@@ -1,6 +1,7 @@
 const models = require('../models');
+const { updateHints } = require('./Game');
 
-const { Account, Stats } = models;
+const { Account, Game, Stats } = models;
 const LastFm = require('./LastFm');
 
 const loginPage = (req, res) => res.render('login');
@@ -117,11 +118,14 @@ const confirmAccount = async (req, res) => {
 const removeAccount = (req, res) => {
   delete req.session.account.lastFm;
 
-  res.status(204).send();
+  res.status(204).json({});
 }
 
 const getInfo = (req, res) => {
-  res.json({ username: req.session.account.username });
+  res.json({ 
+    username: req.session.account.username,
+    hasPremium: req.session.account.isPremiumUser,
+  });
 }
 
 const changePassword = async (req, res) => {
@@ -143,8 +147,49 @@ const changePassword = async (req, res) => {
 
     req.session.account = Account.toAPI(account);
 
-    return res.status(204).send();
+    return res.status(204).json({});
   });
+}
+
+const activatePremium = async (req, res) => {
+  const query = { _id: req.session.account._id };
+  const account = await Account.findOne(query);
+
+  if (account.isPremiumUser) return res.status(422).json({ error: "User is already a premium member" });
+  account.isPremiumUser = true;
+  await account.save();
+  req.session.account = Account.toAPI(account);
+
+  return res.status(204).json({});
+}
+
+const cancelPremium = async (req, res) => {
+  const query = { _id: req.session.account._id };
+  const account = await Account.findOne(query);
+
+  if (!account.isPremiumUser) return res.status(404).json({ error: "User is not a premium member" });
+  account.isPremiumUser = false;
+  await account.save();
+  req.session.account = Account.toAPI(account);
+
+  return res.status(204).json({});
+}
+
+const buyHints = async (req, res) => {
+  const amount = req.body.amount;
+
+  if (!amount) return res.status(400).json({ error: "Must specify number of hints" });
+  
+  const query = { _id: req.session.account._id };
+  const account = await Account.findOne(query);
+
+  account.hintsOwned += amount;
+  await account.save();
+  req.session.account = Account.toAPI(account);
+
+  await updateHints(req, account.hintsOwned);
+
+  return res.status(204).json({});
 }
 
 module.exports = {
@@ -158,4 +203,7 @@ module.exports = {
   removeAccount,
   getInfo,
   changePassword,
+  activatePremium,
+  cancelPremium,
+  buyHints,
 };

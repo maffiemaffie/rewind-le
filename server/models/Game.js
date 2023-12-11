@@ -126,6 +126,11 @@ const GuessSchema = new mongoose.Schema({
 });
 
 const HintSchema = new mongoose.Schema({
+  hintNumber: {
+    type: Number,
+    required: true,
+    min: 1,
+  },
   attribute: {
     type: String,
     enum: ['year', 'trackCount', 'rank'],
@@ -189,6 +194,14 @@ const GameSchema = new mongoose.Schema({
     type: [ActionContainerSchema],
     default: [],
   },
+  guessesLeft: {
+    type: Number,
+    required: true,
+  },
+  hintsLeft: {
+    type: Number,
+    required: true,
+  },
   owner: {
     type: mongoose.Schema.ObjectId,
     required: true,
@@ -227,6 +240,8 @@ GameSchema.statics.toAPI = (doc) => ({
   guesses: doc.guesses.sort((a, b) => a.guessNumber - b.guessNumber),
   hints: doc.hints.sort((a, b) => a.hintNumber - b.hintNumber),
   actions: doc.actions.sort((a, b) => a.actionNumber - b.actionNumber),
+  guessesLeft: doc.guessesLeft,
+  hintsLeft: doc.hintsLeft,
 });
 
 const BreakdownCategorySchema = new mongoose.Schema({
