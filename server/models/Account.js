@@ -33,6 +33,19 @@ const AccountSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  lastFmAccount: {
+    type: String,
+  },
+  isPremiumUser: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+  hintsOwned: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
   createdDate: {
     type: Date,
     default: Date.now,
@@ -42,6 +55,9 @@ const AccountSchema = new mongoose.Schema({
 // Converts a doc to something we can store in redis later on.
 AccountSchema.statics.toAPI = (doc) => ({
   username: doc.username,
+  lastFm: doc.lastFmAccount,
+  isPremiumUser: doc.isPremiumUser,
+  hintsOwned: doc.hintsOwned,
   _id: doc._id,
 });
 
@@ -57,8 +73,8 @@ AccountSchema.statics.generateHash = (password) => bcrypt.hash(password, saltRou
 */
 AccountSchema.statics.authenticate = async (username, password, callback) => {
   try {
-    const doc = await AccountModel.findOne({username}).exec();
-    if(!doc) {
+    const doc = await AccountModel.findOne({ username }).exec();
+    if (!doc) {
       return callback();
     }
 

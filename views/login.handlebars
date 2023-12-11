@@ -1,24 +1,21 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <title>DomoMaker</title>
+  <title>Rewind.le | Music Guessing Game</title>
   <link rel="shortcut icon" href="/assets/img/favicon.png"/>
   <link rel="stylesheet" type="text/css" href="/assets/style.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body> 
-  <nav><a href="/login"><img id="logo" src="/assets/img/face.png" alt="face logo"/></a>
-    <div class="navlink"><a id="loginButton" href="/login">Login</a></div>
-    <div class="navlink"><a id="signupButton" href="/signup">Sign up</a></div>
-  </nav>
-  
+<body id="login-page"> 
+  <header>
+    <h1 id="main-header">Welcome to <span class="site-title">Rewind.le</span></h1>
+    <p id="tagline">How well do you know your music?</p>
+  </header>
   <section id="content">
 
   </section>
-
-  <div id="domoMessage" class='hidden'>
-    <img id="speech" src="/assets/img/speech.png" alt="speech box"/>
+  <div id="message" class='hidden'>
     <h3><span id="errorMessage"></span></h3>
-    <img id="domo" src="assets/img/domo.png" alt="domo"/>
   </div>
   <script src="/assets/loginBundle.js"></script>
 </body>

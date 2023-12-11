@@ -1,0 +1,39 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Settings | Rewind.le</title>
+  <link rel="shortcut icon" href="/assets/img/favicon.png"/>
+  <link rel="stylesheet" type="text/css" href="/assets/style.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <header>
+    <nav id="mainNav">
+      <a href="/settings" class="navButton" id="settingsButton">settings</a>
+      <a href="/play" class="site-title">Rewind.le</a>
+      <a href="/stats" class="navButton" id="statsButton">Stats</a>
+    </nav>
+  </header>
+
+  <h1>User Settings</h1>
+
+  <nav id="settingsSidebar">
+    <ul>
+      <li id="accountTab"><button class="settingsTab">Account</button></li>
+      <li id="premiumTab"><button class="settingsTab">Get Premium</button></li>
+      <li id="lastFmTab"><button class="settingsTab">Last.fm</button></li>
+      <li id="logoutButton"><a class="settingsTab" href="/logout">Logout</a></li>
+    </ul>
+  </nav>
+
+  <section id="activePage">
+    
+  </section>
+
+  <div id="message" class='hidden'>
+    <h3><span id="errorMessage"></span></h3>
+  </div>
+
+  <script src="/assets/settingsBundle.js"></script>
+</body>
+</html>

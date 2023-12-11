@@ -1,265 +1,889 @@
+@import url('https://fonts.googleapis.com/css2?family=Questrial&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css');
+
+:root {
+    --text: rgb(249, 251, 248);
+    --background: rgb(12, 11, 3);
+    --primary: rgb(36, 183, 56);
+    --secondary: rgb(9, 24, 7);
+    --accent: rgb(213, 185, 21);
+
+    --text-50: rgba(249, 251, 248, 0.5);
+    --background-50: rgba(12, 11, 3, 0.5);
+    --primary-50: rgba(36, 183, 56, 0.5);
+    --secondary-50: rgba(9, 24, 7, 0.5);
+    --accent-50: rgba(213, 185, 21, 0.5);
+}
+
 html, body {
     height: 100%;
     width: 100%;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+
+    background-color: var(--background);
+    color: var(--text);
+
+    font-family: 'Questrial', Arial, Helvetica, sans-serif;
 }
 
-#logo {
-    height: 40px;
-    width: 40;
-    padding-top: 5px;
-    float:left;
-    border-radius: 8px;
-}
-
-nav {
-    width: 100%;
-    height: 50px;
-    background-color: #55acee;
-}
-
-nav:nth-child(1) {
-    padding-left: 25px;
-}
-
-.navlink {
-    padding: 5px;
-    padding-top: 12px;
-    padding-left: 20px;
-    color: white;
-    font-size: 1.3em;
-    float: left;
-}
-
-.navlink a, .navlink a:link, .navlink a:visited, .navlink a:hover, .navlink a:active {
-    color: white;
-    text-decoration: none;
-    padding: 5px;
-    border-radius: 4px;
-    background-color: #55acee;
-    transition: background-color 0.4s ease;
-}
-
-.navlink a:hover {
-    transition: background-color 0.8s ease;
-    background-color: #66bdff;
-}
-
-.domoForm {
-    border: 2px solid #338acc;
-    height: 35px;
-    width: 700px;
-    margin-top:0px;
-    padding-top:10px;
-    background-color: #55acee;
-    border-bottom-right-radius: 4px;
-    border-top-right-radius: 4px;
-}
-
-.domoForm label {
-    display: inline-block;
-    width: 75px;
-    margin-left: 10px;
-    font-size: 1.2em;
-    float: left;
-    color: white;
-}
-
-.domoForm input[type=text] {
-    float:left;
-}
-
-.makeDomoSubmit {
-    transition: background-color 0.4s ease;
-    display: inline;
-    width: 90px;
-    background-color: #55acee;
-    border-radius: 2px;
-    color: white;
-    text-decoration: none;
-}
-
-.makeDomoSubmit:link, .makeDomoSubmit:visited, .makeDomoSubmit:hover, .makeDomoSubmit:active {
-    color: white;
-}
-
-.makeDomoSubmit:hover {
-    transition: background-color 0.4s ease;
-    background-color: #338acc;
-}
-
-.mainForm {
-    height: 300px;
-    width: 350px;
-    margin: 0 auto;
-    padding-top: 350px;
-    font-size: 1.2em;
-}
-
-.mainForm h3 {
-    text-align: center;
-}
-
-.mainForm label {
-    display: inline-block;
-    width: 100px;
-    margin-right: 10px;
-    text-align: right;
-    font-size: 1.2em;
-}
-
-.formSubmit {
-    transition: background-color 0.4s ease;
-    display: block;
-    text-align: center;
-    margin: 0 auto;
-    margin-top: 14px;
-    font-size: 1.2em;
-    width: 100px;
-    background-color: #55acee;
-    border-radius: 2px;
-    border-color: #66acee;
-    padding: 3px 0px;
-    color: white;
-    text-decoration: none;
-}
-
-.formSubmit:link, .formSubmit:visited, .formSubmit:hover, .formSubmit:active {
-    color: white;
-}
-
-.formSubmit:hover {
-    transition: background-color 0.4s ease;
-    background-color: #338acc;
-}
-
-#user, #pass, #pass2 {
-    text-align: center;
-    font-size: 1.1em;
-    width: 180px;
-    border-radius: 6px;
-}
-
-#user:focus, #pass:focus, #pass2:focus {
-    outline: none;
-    box-shadow: 0px 0px 1px 1px #55acee;
+::placeholder {
+    font-family: 'Questrial', Arial, Helvetica, sans-serif;
+    color: var(--text);
+    opacity: 0.5;
 }
 
 .hidden {
+    visibility: hidden;
+}
+
+.site-title {
+    color: var(--primary);
+}
+
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+    .site-title {
+        background: linear-gradient(to right, var(--primary), var(--accent));
+        background-clip: text;
+        -webkit-background-clip: text;
+    
+        color: transparent;
+    }
+}
+
+#tagline {
+    color: var(--accent);
+    font-size: large;
+    text-align: center;
+    justify-self: stretch;
+}
+
+h1 {
+    font-size: 3rem;
+    text-align: left;
+    justify-self: stretch;
+}
+
+header {
+    width: 100%;
+}
+
+#mainNav {
+    position: fixed;
+    padding: 0.25em;
+    box-sizing: border-box;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-flow: row nowrap;
+    width: 100%;
+    font-size: x-large;
+
+    background-color: var(--background);
+
+    z-index: 500;
+}
+
+#mainNav > .site-title {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.navButton {
+    color: transparent;
+    font-family: inherit;
+    background: none;
+    border: none;
+    width: 2ch;
+    overflow: hidden;
+    white-space: nowrap;
+    padding-block: 0;
+    padding-inline: 0.5ch;
+    box-sizing: content-box;
+    margin: 0;
+    font-size: inherit;
+    cursor: pointer;
+}
+
+.navButton:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.navButton::before {
+    font-family: "Font Awesome 6 Free"; 
+    font-weight: 900;
+    color: var(--text);
+}
+
+#settingsButton::before {
+    content: "\f0c9";
+}
+
+#hintButton::before {
+    content: "\f0eb"
+}
+
+#howToPlayButton::before {
+    content: "\3f";
+}
+
+#statsButton::before {
+    content: "\e473";
+}
+
+body {
+    display: flex;
+    flex-flow: column nowrap;
+    width: calc(100% - 40px);
+    margin: 0 20px;
+
+    justify-content: center;
+}
+
+#content {
+    align-self: stretch;
+}
+
+#lastFmDisplay {
+    display: grid;
+    grid-template-areas: 
+    "avatar username"
+    "avatar realname";
+
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: auto auto;
+
+    gap: 1em;
+}
+
+#lastFmAccountImage {
+    grid-area: avatar;
+    width: 100%;
+
+    align-self: center;
+    border-radius: 1000px;
+}
+
+#lastFmAccountUsername {
+    grid-area: username;
+    font-size: 2em;
+    align-self: self-end;
+
+    margin: 0;
+}
+
+#lastFmAccountName {
+    grid-area: realname;
+    font-size: 1em;
+    align-self: self-start;
+
+    margin: 0;
+}
+
+/* form styling */
+form {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1em;
+}
+
+form > label {
+    font-size: small;
+}
+
+form > p {
+    margin: 0.5em 0;
+}
+
+form a:link,
+form a:visited {
+    color: var(--primary);
+}
+
+form a:hover,
+form a:active {
+    color: var(--text);
+}
+
+input {
+    background-color: transparent;
+    color: var(--text);
+    padding: 0.5em 1em;
+    border-radius: 100px;
+    border: 1.5px solid var(--text);
+
+    font-size: large;
+    width: 100%;
+}
+
+[type="submit"] {
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+[type="submit"]:hover,
+[type="submit"]:focus {
+    border: 1.5px solid var(--primary);
+    background-color: var(--primary);
+    color: var(--text);
+}
+
+[type="button"]:hover,
+[type="button"]:focus {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+[type="submit"]:active {
+    border: 1.5px solid var(--text);
+    background-color: var(--text);
+    color: var(--primary);
+}
+
+[type="button"]:active {
+    opacity: 0.5;
+}
+
+form {
+    padding: 2em;
+    border-radius: 1em 1em;
+    background: linear-gradient(to top right, var(--background), var(--secondary));
+    border: 1.5px solid var(--primary-50);
+}
+
+#message {
+    align-self: stretch;
+    color: var(--accent);
+    font-size: small;
+}
+
+#gamePage {
+    justify-content: flex-start;
+}
+
+#gamePage h1 {
+    margin-top: 60px;
+}
+
+#searchBar { 
+    display: block;
+    
+    position: relative;
+    align-self: center;
+
+    background: none;
+    border: none;
+    padding: 0; 
+    margin: 0;
+
+    z-index: 250;
+}
+
+#searchOptionList {
+    position: absolute;
+    top: calc(100% + 2px);
+
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.searchOption {
+    padding: 0.25em;
+    border: none;
+    border-radius: 0;
+
+    background: var(--background);
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    color: var(--text);
+}
+
+.searchOption:hover {
+    border: none;
+}
+
+#actionList {
+    display: flex;
+    flex-flow: column-reverse nowrap;
+    justify-content: flex-end;
+
+    height: 100%;
+}
+
+.guess,
+.hint {
+    display: grid;
+    grid-template-areas: 
+    "number number number"
+    "album album album"
+    "artist artist artist"
+    "year rank trackcount";
+
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto auto auto 200px;
+    gap: 5px;
+
+    padding: 10px;
+    background: linear-gradient(to top right, var(--background), var(--secondary));
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+
+    margin: 10px 0;
+}
+
+.guessNumber,
+.hintNumber {
+    grid-area: number;
+    color: var(--accent);
+}
+.albumName {
+    grid-area: album;
+}
+.artistName {
+    grid-area: artist;
+}
+.year {
+    grid-area: year;
+}
+.rank {
+    grid-area: rank;
+}
+.trackCount {
+    grid-area: trackcount
+}
+
+.guess > *,
+.hint > * {
+    margin: 0;
+}
+.guess > h2,
+.guess > h3 {
+    padding: 0.25em;
+}
+
+.closeness-far {
+    background: rgba(100, 100, 100, 0.5);
+    /* border: 2px solid rgb(100, 100, 100); */
+}
+.closeness-close {
+    background: var(--accent-50);
+    /* border: 2px solid var(--accent); */
+}
+.closeness-correct {
+    background: var(--primary-50);
+    /* border: 2px solid var(--primary); */
+}
+
+.guessBlock {
+    justify-self: stretch;
+    align-self: center;
+
+    display: grid;
+    justify-content: center;
+    text-align: center;
+
+    font-size: medium;
+
+    animation: 0.2s linear guessBlockGrow
+}
+
+@keyframes guessBlockGrow {
+    from {
+        max-height: 0;
+    }
+
+    to {
+        max-height: 50%;
+    }
+}
+
+.guessBlock > .guessBlockValue {
+    font-size: x-large;
+}
+
+.guessBlock.closeness-correct {
+    height: 60%;
+
+    grid-template-areas: 
+    "title"
+    "value";
+
+    align-content: center;
+}
+.guessBlock.closeness-close {
+    height: 30%;
+}
+.guessBlock.closeness-far {
+    height: 50%;
+}
+.guessBlock.tooHigh {
+    transform: translate(0, -50%);
+
+    grid-template-areas: 
+    "title"
+    "value"
+    "arrow";
+
+    align-content: end;
+}
+.guessBlock.tooLow {
+    transform: translate(0, 50%);
+
+    grid-template-areas: 
+    "arrow"
+    "title"
+    "value";
+
+    align-content: start;
+}
+
+.guessBlock > * {
+    grid-area: title;
+}
+
+.guessBlock > span {
+    grid-area: value;
+}
+
+.guessBlock.tooHigh::after,
+.guessBlock.tooLow::after {
+    grid-area: arrow;
+    font-family: "Font Awesome 6 Free"; 
+    font-weight: 900;
+    /* color: var(--text); */
+}
+
+.guessBlock.tooHigh::after {
+    content: "\f0d7";
+}
+.guessBlock.tooLow::after {
+    content: "\f0d8";
+}
+
+#howToPlayWrapper,
+#endScreenWrapper {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    /* background: var(--background-50); */
+    background: linear-gradient(to top right, var(--background-50), var(--secondary-50));
+
+    display: grid;
+    align-content: center;
+    justify-content: stretch;
+}
+
+#howToPlay,
+#endScreen {
+    padding: 1em;
+    margin: 1em;
+
+    background: linear-gradient(to top right, var(--background), var(--secondary));
+    border: 1.5px solid var(--primary-50);
+
+    font-size: small;
+    max-height: 100%;
+    overflow: scroll;
+}
+
+#endScreen {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 5px;
+}
+
+#endScreen > h2 {
+    margin: 0;
+}
+
+#endScreen > .guess {
+    background: none;
+    box-shadow: none;
+}
+
+#albumDisplay {
+    display: grid;
+    grid-template-areas: 
+    "image name"
+    "image artist";
+    grid-template-columns: auto 2fr;
+    grid-template-rows: auto auto;
+
+    gap: 1em;
+}
+
+#albumDisplay > img {
+    grid-area: image;
+    width: 75px;
+    margin: 10px;
+}
+#albumDisplay > h2 {
+    grid-area: name;
+    color: var(--primary);
+    align-self: end;
+    margin: 0;
+}
+#albumDisplay > h3 {
+    grid-area: artist;
+    align-self: start;
+    margin: 0;
+}
+
+#endScreen > button {
+    border: none;
+    background: none;
+    color: var(--text);
+    font-family: 'Questrial', Arial, Helvetica, sans-serif;
+    font-size: medium;
+    padding: 0;
+}
+
+#endScreen > a,
+#endScreen > button {
+    text-align: center;
+    background-color: transparent;
+    color: var(--text);
+    padding: 0.5em 1em;
+    border-radius: 100px;
+    border: 1.5px solid var(--text);
+
+    font-size: large;
+}
+
+#endScreen > a {
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+#shareSuccess {
+    color: var(--accent);
+}
+
+#allTimeStats {
+    display: grid;
+    grid-template-areas: 
+    "breakdown-title winrate-title"
+    "breakdown winrate";
+
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+
+    gap: 10px;
+}
+
+#breakdownTitle {
+    grid-area: breakdown-title;
+    font-size: large;
+}
+#breakdown {
+    grid-area: breakdown;
+    padding: 0;
+    margin: 0;
+}
+
+#breakdown > li {
+    height: 1em;
+    display: flex;
+    flex-flow: row nowrap;
+    counter-increment: bulletNumber;
+}
+
+#breakdown > li::before {
+    content: counter(bulletNumber);
+    width: 4ch;
+    text-align: right;
+}
+
+#breakdown > li > svg {
+    fill: var(--primary);
+    padding: 0 1ch;
+    flex-grow: 1;
+}
+
+#winrateTitle {
+    font-size: large;
+    grid-area: winrate-title;
+}
+#winRate {
+    grid-area: winrate;
+    width: 100%;
+    margin: 0;
+
+    position: relative;
+}
+
+#winRate > svg {
+    padding: 10px;
+    overflow: visible;
+    stroke-width: 10px;
+    fill: none;
+
+    box-sizing: border-box;
+    rotate: 90deg;
+}
+
+#lossArc {
+    stroke: var(--secondary);
+}
+
+#winArc {
+    stroke: var(--primary);
+}
+
+#winRate > figcaption {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    font-size: x-large;
+}
+
+fieldset {
+    border: none;
+}
+
+#accountWindow {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+#accountWindow > form {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    background: none;
+}
+
+#accountWindow label {
+    color: var(--primary);
+}
+
+#accountWindow .textfield {
+    padding: 0
+}
+
+#accountWindow .textfield:disabled > * {
     display: none;
 }
 
-#domoMessage {
-    top: 250px;
-    width: 250px;
-    height: 650px;
-    position: absolute;
-    z-index: 200;
-    right: 0px;
-    overflow: hidden;
+#accountWindow .textfield:disabled > label:first-of-type,
+#accountWindow .textfield:disabled > input:first-of-type {
+    display: initial;
 }
 
-#domoMessage h3 {
-    width: 200px;
-    position: absolute;
-    top: 0px;
-    left: 20px;
+#accountWindow .textfield:disabled > input:first-of-type {
+    border: none;
+    padding-left: 0;
+    padding-right: 0;
 }
 
-#speech {
-    height: 120px;
-    width: 250px;
-    z-index:300;
+.editButton:disabled {
+    display: none;
 }
 
-#errorMessage {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: red;
-    font-style: italic;
+#updatePassword >  :disabled {
+    display: none;
 }
 
-#domo {
-    z-index: 225;
-    margin-top: -20px;
-    margin-left: 135px;
-    height: 450px;
-    width: 300px;
-    -ms-transform: rotate(330deg);
-    -webkit-transform: rotate(330deg); 
-    transform: rotate(330deg);
+#activePage { 
+    flex-grow: 1;
 }
 
-#domos {
-    width: 40%;
-    min-width: 400px;
-    border: 2px solid #55acee;
-    border-radius: 4px;
-    margin: 0 auto;
-    margin-top: 100px;
+#settingsSidebar {
+    position: fixed;
+    width: 100vw;
+    bottom: 0;
+    left: 0;
+
+    border-top: 1.5px solid var(--primary);
+    background: linear-gradient(to top right, var(--background), var(--secondary));
 }
 
-.domo {
-    width: 95%;
-    margin: 0 auto;
-    margin-top: 2px;
-    margin-bottom: 2px;
-    border: 2px solid #55acee;
-    border-radius: 4px;
-    background-color: #55acee;
-    padding: 10px;
-    min-height:60px;
-    overflow: hidden;
+#settingsSidebar > ul {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+
+    align-items: center;
+    list-style: none;
+
+    margin: 0;
+    padding: 0;
+    width: 100%;
+
+    box-sizing: border-box;
 }
 
-.domo:hover {
-    transition: border-color 0.2s ease-out;
-    border-color: rgba(255,255,255, 0.8);
-    transition: background-color 2.6s ease-out;
-    background-color: #66bfff;
+#settingsSidebar > ul > li > button {
+    border: none;
+    background: none;
+    font-family: 'Questrial', Arial, Helvetica, sans-serif;
+    font-size: medium;
+    padding: 0;
+    margin: 0;
 }
 
-img.domoFace {
-    margin-left: 25px;
-    margin-right: 10px;
-    height: 50px;
-    width: 50px;
-    border-radius: 4px;
-    margin-top:10px;
-    float:left;
+#settingsSidebar > ul > li > a,
+#settingsSidebar > ul > li > button {
+    text-decoration: none;
+    color: var(--text);
+    font-size: large;
 }
 
-h3.emptyDomo {
-    width: 400px;
-    font-size: 1.5em;
-    margin: 0 auto;
-    text-align: center;
-    margin-top: 18px;
+#settingsSidebar > ul > li {
+    padding: 1em;
 }
 
-h3.domoName {
-    float:left;
-    width: 200px;
-    font-weight: bold;
-    padding-left: 65px;
-    font-size: 1.5em;
+#settingsSidebar > ul > li:hover,
+#settingsSidebar > ul > li:focus {
+    background-color: var(--primary);
+    color: var(--text);
 }
 
-h3.domoAge {
-    float:right;
-    text-align: left;
-    width: 100px;
-    font-weight: bold;
-    padding-right: 40px;
-    font-size: 1.5em;
+#settingsSidebar > ul > li:active > a,
+#settingsSidebar > ul > li:active > button {
+    color: var(--primary);
 }
 
-.domo:first-child {
-    margin-top: 10px;
+#settingsSidebar > ul > li:active {
+    background-color: var(--text);
 }
 
-.domo:last-child {
-    margin-bottom:10px;
+#notFound > #content {
+    padding: 2em;
+    border-radius: 2em;
+
+    background: linear-gradient(to top right, var(--background), var(--secondary));
+    border: 1.5px solid var(--primary-50);
 }
+
+.buyHintButton,
+#buyPremium {
+    background: none;
+    padding: 0.5em 1em;
+    border: 1.5px solid var(--accent-50);
+    border-radius: 10px;
+    color: var(--accent);
+    margin: 0.5em;
+}
+
+.buyHintButton:hover,
+.buyHintButton:focus,
+#buyPremium:hover,
+#buyPremium:focus {
+    border: 1.5px solid var(--accent);
+}
+
+.buyHintButton:active,
+#buyPremium:active {
+    border: 1.5px solid var(--text);
+    color: var(--text);
+}
+
+#statsPage {
+    justify-content: flex-start;
+}
+
+#statsPage > h1 {
+    margin-top: 60px;
+}
+
+/* web */
+@media screen and (min-width: 426px) {
+    #main-header {
+        font-size: 5rem;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    #tagline {
+        font-size: 1.5rem;
+    }
+
+    form {
+        display: grid;
+        grid-template-columns: auto auto;
+        align-items: center;
+        gap: 0.5em 1em;
+    
+        font-size: larger;
+    }
+    
+    form > label {
+        grid-column: 1 / 2;
+        font-size: large;
+    }
+    
+    form > input {
+        grid-column: 2 / 3;
+    }
+    
+    form > [type="submit"],
+    form > [type="button"],
+    form > p,
+    form > h2 {
+        grid-column: 1 / 3;
+    }
+
+    #content {
+        align-self: center;
+        width: 100%;
+        max-width: 500px;
+    }
+
+    .mainForm, #message {
+        max-width: 400px;
+    }
+
+    #message {
+        align-self: center;
+    }
+
+    #searchBarContainer,
+    #allTimeStatsWrapper {
+        align-self: center;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    #howToPlayWrapper {
+        justify-content: center;
+    }
+
+    #howToPlay {
+        max-width: 400px;
+    }
+
+
+    #endScreenWrapper {
+        justify-content: center;
+    }
+
+    #albumDisplay > img {
+        width: 150px;
+    }
+    #albumDisplay > h2 {
+        font-size: xx-large;
+    }
+    #albumDisplay > h3 {
+        font-size: x-large;
+    }
+
+    #settingsButton::before {
+        content: "\f013"
+    }
+
+}
+

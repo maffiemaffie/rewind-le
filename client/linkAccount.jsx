@@ -3,14 +3,15 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 
 const handleAccountSearchResults = (result) => {
-    if (result.account) {
-        ReactDOM.render(<ConfirmAccountWindow 
-                username={result.account.username}
-                name={result.account.name}
-                accountImageSrc={result.account.image}
-            />,
-            document.getElementById('content'));
-    }
+    const username = result.username;
+    const realname = result.realname || result.username;
+
+    ReactDOM.render(<ConfirmAccountWindow 
+            username={username}
+            name={realname}
+            accountImageSrc={`/getLastFm?link=${encodeURIComponent(result.image)}`}
+        />,
+        document.getElementById('content'));
 }
 
 const handleSearchAccount = (e) => {
@@ -43,7 +44,7 @@ const EnterUsernameWindow = (props) => {
         <form id="connectForm"
             name="connectForm"
             onSubmit={handleSearchAccount}
-            action="/setLastFmAccount"
+            action="/connectLastFm/setAccount"
             method="POST"
             className="mainForm"
         >
@@ -67,18 +68,18 @@ const ConfirmAccountWindow = (props) => {
         <form id="connectConfirmForm"
             name="connectConfirmForm"
             onSubmit={handleConfirmAccount}
-            action="/confirmLastFmAccount"
+            action="/connectLastFm/confirmAccount"
             method="POST"
             className="mainForm"
         >
             <h2>Is this you?</h2>
-            <div>
+            <div id="lastFmDisplay">
                 <img src={props.accountImageSrc} alt={`${props.username}'s profile picture`} id="lastFmAccountImage" />
                 <p id='lastFmAccountUsername'>{props.username}</p>
                 <p id="lastFmAccountName">{props.name}</p>
             </div>
-            <input type="submit" onClick={onNotMeClick} className="formSubmit" value="Yes that's me" />
-            <input type="button" value="No, that's not me" />
+            <input type="submit" className="formSubmit" value="Yes that's me" />
+            <input type="button" onClick={onNotMeClick} value="No, that's not me" />
         </form>
     );
 };
@@ -89,3 +90,8 @@ const init = () => {
 }
 
 window.onload = init;
+
+module.exports = {
+    EnterUsernameWindow,
+    ConfirmAccountWindow,
+};

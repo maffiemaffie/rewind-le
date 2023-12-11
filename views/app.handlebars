@@ -1,28 +1,63 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <title>DomoMaker</title>
+  <title>Today's Rewind.le</title>
   <link rel="shortcut icon" href="/assets/img/favicon.png"/>
   <link rel="stylesheet" type="text/css" href="/assets/style.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body>
-  <nav><a href="/login"><img id="logo" src="/assets/img/face.png" alt="face logo"/></a>
-    <div class="navlink"><a href="/logout">Log out</a></div>
-    <div class="navlink"><a href="/search">Search Domos</a></div>
-  </nav>
+<body id="gamePage">
+  <header>
+    <nav id="mainNav">
+      <a href="/settings" class="navButton" id="settingsButton">settings</a>
+      <a href="/play" class="site-title">Rewind.le</a>
+      <button class="navButton" id="howToPlayButton">How to Play</button>
+      <button class="navButton" id="hintButton">Use Hint</button>
+      <a href="/stats" class="navButton" id="statsButton">Stats</a>
+    </nav>
+  </header>
 
-  <section id="makeDomo">
+  <h1>Today's Rewind.le</h1>
+
+  <section id="searchBarContainer">
 
   </section>
-  <section id="domos">
-    
+  <section id="content">
+
   </section>
 
-  <div id="domoMessage" class='hidden'>
-    <img id="speech" src="/assets/img/speech.png" alt="speech box"/>
+  <div id="message" class='hidden'>
     <h3><span id="errorMessage"></span></h3>
-    <img id="domo" src="assets/img/domo.png" alt="domo"/>
   </div>
+
+  <div id="howToPlayWrapper" class="hidden">
+    <section id="howToPlay">
+      <header>
+        <h2>How to Play</h2>
+        <p>
+          Welcome to <span class="site-title">Rewind.le</span>, your album guessing game. Each day you'll get the chance to guess one of your favorite albums. For each album you guess, you'll get back four pieces of information: its artist, release year, number of tracks, and its rank out of all your albums. You'll also be told if your guess was too high or too low in each of these attributes, and how close you were. 
+        </p>
+        <p>
+          Let's say the target was OneRepublic's Waking Up, which was released in 2009 with 11 tracks. And let's say this is one of your favorite albums coming in at rank 7. 
+        </p>
+        <p>
+          Now let's say you guessed The Script's self titled, released in 2008 with 11 tracks, and is your number 1 favorite album. Your guess would look something like this:
+        </p>
+        <div class='guess'>
+            <h2 class="albumName closeness-far">The Script</h2>
+            <h3 class="artistName closeness-close">The Script</h3>
+            <div class="guessBlock year closeness-close tooLow">Released <span class='guessBlockValue'>2008</span></div>
+            <div class="guessBlock rank closeness-far tooHigh">Rank <span class='guessBlockValue'>1</span></div>
+            <div class="guessBlock trackCount closeness-correct correct">Track Count <span class='guessBlockValue'>11</span></div>
+        </div>
+        <p>
+          When you get the right one, they'll all turn green!
+        </p>
+      </header>
+    </section>
+  </div>
+
+  <section id="endScreenWrapper" class="hidden"></section>
   <script src="/assets/appBundle.js"></script>
 </body>
 </html>
