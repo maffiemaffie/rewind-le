@@ -52,7 +52,7 @@ const Hint = (props) => {
     const labels = {
         rank: "Rank",
         year: "Released",
-        trackCount: "Track Account",
+        trackCount: "Track Count",
     };
 
     return (
