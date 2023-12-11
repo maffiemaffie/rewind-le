@@ -4,7 +4,8 @@ const ReactDOM = require('react-dom');
 
 const AllTimeStats = (props) => {
     const breakdown = props.allTime.breakdown.map((category) => {
-        const frequencyPercentage = category.frequency * 100 / props.allTime.wins;
+        let frequencyPercentage = 0;
+        if (props.allTime.wins > 0) frequencyPercentage = category.frequency * 100 / props.allTime.wins;
         
         return <li 
         className='breakdownCategory' 
@@ -26,7 +27,8 @@ const AllTimeStats = (props) => {
     </li>
     });
 
-    const rate = Math.floor(props.allTime.wins * 100 / (props.allTime.losses + props.allTime.wins));
+    let rate = 0;
+    if (props.allTime.wins > 0 || props.allTime.losses > 0) rate = Math.floor(props.allTime.wins * 100 / (props.allTime.losses + props.allTime.wins));
 
     const arcFromRate = (rate) => {
         const radius = 50;

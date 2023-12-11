@@ -790,6 +790,14 @@ fieldset {
     color: var(--text);
 }
 
+#statsPage {
+    justify-content: flex-start;
+}
+
+#statsPage > h1 {
+    margin-top: 60px;
+}
+
 /* web */
 @media screen and (min-width: 426px) {
     #main-header {
@@ -843,7 +851,8 @@ fieldset {
         align-self: center;
     }
 
-    #searchBarContainer {
+    #searchBarContainer,
+    #allTimeStatsWrapper {
         align-self: center;
         width: 100%;
         max-width: 400px;
