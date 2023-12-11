@@ -152,7 +152,7 @@ const changePassword = async (req, res) => {
 
 const activatePremium = async (req, res) => {
   const query = { _id: req.session._id };
-  const account = Account.findOne(query);
+  const account = await Account.findOne(query);
 
   if (account.isPremiumUser) return res.status(422).json({ error: "User is already a premium member" });
   account.isPremiumUser = true;
@@ -164,7 +164,7 @@ const activatePremium = async (req, res) => {
 
 const cancelPremium = async (req, res) => {
   const query = { _id: req.session._id };
-  const account = Account.findOne(query);
+  const account = await Account.findOne(query);
 
   if (!account.isPremiumUser) return res.status(404).json({ error: "User is not a premium member" });
   account.isPremiumUser = false;
