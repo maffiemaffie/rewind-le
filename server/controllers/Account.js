@@ -121,7 +121,10 @@ const removeAccount = (req, res) => {
 }
 
 const getInfo = (req, res) => {
-  res.json({ username: req.session.account.username });
+  res.json({ 
+    username: req.session.account.username,
+    hasPremium: req.session.account.isPremiumUser,
+  });
 }
 
 const changePassword = async (req, res) => {
