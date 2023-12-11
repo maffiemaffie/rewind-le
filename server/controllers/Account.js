@@ -148,11 +148,19 @@ const changePassword = async (req, res) => {
 }
 
 const activatePremium = async (req, res) => {
+  const query = { _id: req.session._id };
+  const account = Account.findOne(query);
 
+  if (account.isPremiumUser) return res.status(422).json({ error: "User is already a premium member" });
+  account.isPremiumUser = true;
+  await account.save();
+  req.session.account = Account.toAPI(account);
+
+  return res.status(204).send();
 }
 
 const cancelPremium = async (req, res) => {
-
+  
 }
 
 module.exports = {
