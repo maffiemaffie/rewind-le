@@ -99,7 +99,7 @@ const PremiumWindow = (props) => {
 
   const BuyHintsWindow = (props) => {
     const buyHints = (amount) => {
-      helper.sendPost('/premium/hint', { amount }, result => {
+      helper.sendPost('/premium/buyHints', { amount }, result => {
         if (result.error) {
           return document.getElementById('buyResult').innerText = "Purchase could not be made at this time.";
         }
