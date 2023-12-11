@@ -10,7 +10,7 @@ const gamePage = (req, res) => {
 
 const statsPage = (req, res) => {
   res.render('stats');
-}
+};
 
 const collectValidTopAlbums = async (lastFmUsername) => {
   const validGuesses = [];
@@ -26,7 +26,7 @@ const collectValidTopAlbums = async (lastFmUsername) => {
      */
     // eslint-disable-next-line no-await-in-loop
     const topAlbumJson = await LastFm.getTopAlbums(lastFmUsername, ++currentPage);
-    
+
     if (topAlbumJson.error) throw new Error(topAlbumJson.error);
 
     const topAlbums = topAlbumJson.topalbums.album;
@@ -58,39 +58,39 @@ const collectValidTopAlbums = async (lastFmUsername) => {
 
 const createNewGame = async (req, res) => {
   let validGuesses;
-  
+
   try {
     validGuesses = await collectValidTopAlbums(req.session.account.lastFm);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ error: "Error fetching game data" });
+    return res.status(500).json({ error: 'Error fetching game data' });
   }
 
   const targetIndex = Math.floor(Math.random() * validGuesses.length);
   const targetAlbum = validGuesses[targetIndex];
 
   const albumInfoParams = [targetAlbum.mbid, targetAlbum.artist, targetAlbum.album];
-  
+
   const targetAlbumInfo = await LastFm.getAlbumInfo(...albumInfoParams);
 
   if (targetAlbumInfo.error) {
     console.log(targetAlbum.error);
-    return res.status(500).json({ error: "Error fetching game data" });
+    return res.status(500).json({ error: 'Error fetching game data' });
   }
 
   const mbAlbumInfo = await MusicBrainz.getAlbumInfo(targetAlbum.mbid);
 
   if (mbAlbumInfo.error) {
     console.log(mbAlbumInfo.error);
-    return res.status(500).json({ error: "Error fetching game data" });
+    return res.status(500).json({ error: 'Error fetching game data' });
   }
 
   let trackCount;
   try {
     trackCount = targetAlbumInfo.album.tracks.track.length;
-  } catch {
+  } catch (err) {
     console.log(targetAlbumInfo);
-    return res.status(500).json({ error: "Error fetching game data" });
+    return res.status(500).json({ error: 'Error fetching game data' });
   }
 
   const target = {
@@ -112,7 +112,7 @@ const createNewGame = async (req, res) => {
     validGuesses,
     maxGuesses,
     guessesLeft: maxGuesses,
-    hintsLeft: hintsLeft,
+    hintsLeft,
     owner: req.session.account._id,
   };
 
@@ -154,13 +154,13 @@ const guess = async (req, res) => {
   const game = await Game.findOne(query);
 
   const {
-    target, validGuesses, guesses, hints, actions, maxGuesses, createdDate
+    target, validGuesses, guesses, hints, actions, maxGuesses, createdDate,
   } = game;
 
   const guessNumber = guesses.length + 1;
 
   if (guessNumber > maxGuesses) {
-    return res.status(403).json({ error: "out of guesses" })
+    return res.status(403).json({ error: 'out of guesses' });
   }
 
   const guessLastFmInfo = await LastFm.getAlbumInfo(mbid, artist, album);
@@ -231,11 +231,11 @@ const guess = async (req, res) => {
     const { allTime, completedGames } = stats;
 
     const date = `${createdDate.getFullYear()}-${createdDate.getMonth() + 1}-${createdDate.getDate()}`;
-    const outcome = rank === target.rank ? "won" : "lost";
+    const outcome = rank === target.rank ? 'won' : 'lost';
 
-    if (outcome === "won") {
+    if (outcome === 'won') {
       allTime.wins++;
-      allTime.breakdown.find(guessCount => guessCount.guesses === guessNumber).frequency++;
+      allTime.breakdown.find((guessCount) => guessCount.guesses === guessNumber).frequency++;
     } else {
       allTime.losses++;
     }
@@ -262,18 +262,18 @@ const hint = async (req, res) => {
 
   const query = { createdDate: { $gte: today }, owner: req.session.account._id };
   const game = await Game.findOne(query);
-  if (game.hints.length === 3) return res.status(403).json({ error: "No more hints can be used this game" });
+  if (game.hints.length === 3) return res.status(403).json({ error: 'No more hints can be used this game' });
 
   const account = await Account.findOne({ _id: req.session.account._id });
-  if (account.hintsOwned === 0) return res.status(403).json({ error: "No more hints owned" });
+  if (account.hintsOwned === 0) return res.status(403).json({ error: 'No more hints owned' });
 
   const hintNumber = game.hints.length + 1;
 
   const { target, hints, actions } = game;
-  let attributes = ["year", "trackCount", "rank"];
-  for (usedHint of hints) {
-    attributes = attributes.filter(attr => attr !== usedHint.attribute);
-  }
+  let attributes = ['year', 'trackCount', 'rank'];
+  hints.foreach((usedHint) => {
+    attributes = attributes.filter((attr) => attr !== usedHint.attribute);
+  });
 
   const randomIndex = Math.floor(Math.random() * attributes.length);
   const randomAttribute = attributes[randomIndex];
@@ -289,7 +289,7 @@ const hint = async (req, res) => {
     hintNumber: hints.length + 1,
     attribute: randomAttribute,
     value: target[randomAttribute],
-    hintsLeft
+    hintsLeft,
   };
   hints.push(hintDoc);
   actions.push({
@@ -303,7 +303,7 @@ const hint = async (req, res) => {
   await game.save();
 
   return res.json(hintDoc);
-}
+};
 
 const getTarget = async (req, res) => {
   const today = new Date();
@@ -325,18 +325,18 @@ const getTarget = async (req, res) => {
   const targetDoc = {
     artist: target.artist,
     album: target.album,
-    art: targetLastFmInfo.album.image.at(-1)["#text"]
+    art: targetLastFmInfo.album.image.at(-1)['#text'],
   };
 
   return res.json(targetDoc);
-}
+};
 
 const getStats = async (req, res) => {
   const statsQuery = { owner: req.session.account._id };
   const stats = await Stats.findOne(statsQuery);
 
   return res.json(Stats.toAPI(stats));
-}
+};
 
 const updateHints = async (req, hintsOwned) => {
   const today = new Date();
@@ -348,7 +348,7 @@ const updateHints = async (req, hintsOwned) => {
   const hintsLeft = Math.min(hintsOwned, 3 - game.hints.length);
   game.hintsLeft = hintsLeft;
   await game.save();
-}
+};
 
 module.exports = {
   gamePage,
