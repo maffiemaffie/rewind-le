@@ -57,8 +57,8 @@ const Hint = (props) => {
 
     return (
         <div className='hint'>
-            <p className='hintNumber'>Hint {props.hint.hintNumber}:</p>
-            <div className={`guessBlock ${props.hint.attribute} correct`}>{labels[props.hint.attribute]} <span className='guessBlockValue'>{props.hint.value}</span></div>
+            <p className='hintNumber'>Hint {props.hint.hintNumber} of 3:</p>
+            <div className={`guessBlock ${props.hint.attribute} closeness-correct correct`}>{labels[props.hint.attribute]} <span className='guessBlockValue'>{props.hint.value}</span></div>
         </div>
     );
 }
@@ -150,7 +150,7 @@ const handleHintData = (data) => {
     ReactDOM.render(<Hint hint={data}/>, actionContainer);
 
     const hintButton = document.getElementById('hintButton');
-    if (data.hintsLeft === 0) hintButton.setAttribute('disabled');
+    if (data.hintsLeft === 0) hintButton.setAttribute('disabled', '');
     else hintButton.removeAttribute('disabled');
     document.querySelector('#searchBar > input').removeAttribute('disabled');
 }

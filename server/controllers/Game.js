@@ -268,7 +268,7 @@ const hint = async (req, res) => {
   const hintNumber = game.hints.length + 1;
 
   const { target, hints, actions } = game;
-  const attributes = ["year", "trackCount", "rank"];
+  let attributes = ["year", "trackCount", "rank"];
   for (usedHint of hints) {
     attributes = attributes.filter(attr => attr !== usedHint.attribute);
   }
