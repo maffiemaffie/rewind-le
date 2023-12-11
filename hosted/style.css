@@ -755,6 +755,14 @@ fieldset {
     background-color: var(--text);
 }
 
+#notFound > #content {
+    padding: 2em;
+    border-radius: 2em;
+
+    background: linear-gradient(to top right, var(--background), var(--secondary));
+    border: 1.5px solid var(--primary-50);
+}
+
 /* web */
 @media screen and (min-width: 426px) {
     #main-header {
