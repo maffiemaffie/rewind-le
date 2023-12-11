@@ -97,8 +97,37 @@ const PremiumWindow = (props) => {
     );
   };
 
-  if (hasPremium) return <CancelPremiumWindow/>;
-  return <BuyPremiumWindow/>;
+  const BuyHintsWindow = (props) => {
+    const buyHints = (amount) => {
+      helper.sendPost('/premium/hint', { amount }, result => {
+        if (result.error) {
+          return document.getElementById('buyResult').innerText = "Purchase could not be made at this time.";
+        }
+        return document.getElementById('buyResult').innerText = "Hints puchased succesfully";
+      });
+    };
+
+    return (
+      <div id='buyHintsWindow'>
+        <h3>Buy Hints</h3>
+        <button onClick={() => buyHints(5)} className='buyHintButton' id='fiveHintsButton'>Buy Five Hints</button>
+        <button onClick={() => buyHints(3)} className='buyHintButton' id='threeHintsButton'>Buy Three Hints</button>
+        <button onClick={() => buyHints(1)} className='buyHintButton' id='oneHintButton'>Buy One Hint</button>
+        <p id='buyResult'></p>
+      </div>
+    )
+  }
+
+  if (hasPremium) return (
+  <div id='premiumWindow'>
+    <CancelPremiumWindow/>
+    <BuyHintsWindow/>
+  </div>);
+  return (
+  <div id='premiumWindow'>
+    <BuyPremiumWindow/>
+    <BuyHintsWindow/>
+  </div>);
 }
 
 const LastFmWindow = (props) => {
