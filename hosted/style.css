@@ -490,6 +490,10 @@ form {
 
     background: linear-gradient(to top right, var(--background), var(--secondary));
     border: 1.5px solid var(--primary-50);
+
+    font-size: small;
+    max-height: 100%;
+    overflow: scroll;
 }
 
 #endScreen {
@@ -763,6 +767,29 @@ fieldset {
     border: 1.5px solid var(--primary-50);
 }
 
+.buyHintButton,
+#buyPremium {
+    background: none;
+    padding: 0.5em 1em;
+    border: 1.5px solid var(--accent-50);
+    border-radius: 10px;
+    color: var(--accent);
+    margin: 0.5em;
+}
+
+.buyHintButton:hover,
+.buyHintButton:focus,
+#buyPremium:hover,
+#buyPremium:focus {
+    border: 1.5px solid var(--accent);
+}
+
+.buyHintButton:active,
+#buyPremium:active {
+    border: 1.5px solid var(--text);
+    color: var(--text);
+}
+
 /* web */
 @media screen and (min-width: 426px) {
     #main-header {
@@ -843,6 +870,10 @@ fieldset {
     }
     #albumDisplay > h3 {
         font-size: x-large;
+    }
+
+    #settingsButton::before {
+        content: "\f013"
     }
 
 }
