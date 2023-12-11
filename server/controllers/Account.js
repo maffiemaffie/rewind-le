@@ -147,6 +147,14 @@ const changePassword = async (req, res) => {
   });
 }
 
+const activatePremium = async (req, res) => {
+
+}
+
+const cancelPremium = async (req, res) => {
+
+}
+
 module.exports = {
   loginPage,
   login,
@@ -158,4 +166,6 @@ module.exports = {
   removeAccount,
   getInfo,
   changePassword,
+  activatePremium,
+  cancelPremium,
 };
