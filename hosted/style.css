@@ -103,6 +103,12 @@ header {
     box-sizing: content-box;
     margin: 0;
     font-size: inherit;
+    cursor: pointer;
+}
+
+.navButton:disabled {
+    opacity: 0.5;
+    cursor: default;
 }
 
 .navButton::before {
@@ -113,6 +119,10 @@ header {
 
 #settingsButton::before {
     content: "\f0c9";
+}
+
+#hintButton::before {
+    content: "\f0eb"
 }
 
 #howToPlayButton::before {
@@ -306,7 +316,8 @@ form {
     height: 100%;
 }
 
-.guess {
+.guess,
+.hint {
     display: grid;
     grid-template-areas: 
     "number number number"
@@ -325,27 +336,29 @@ form {
     margin: 10px 0;
 }
 
-.guess > .guessNumber {
+.guessNumber,
+.hintNumber {
     grid-area: number;
     color: var(--accent);
 }
-.guess > .albumName {
+.albumName {
     grid-area: album;
 }
-.guess > .artistName {
+.artistName {
     grid-area: artist;
 }
-.guess > .year {
+.year {
     grid-area: year;
 }
-.guess > .rank {
+.rank {
     grid-area: rank;
 }
-.guess > .trackCount {
+.trackCount {
     grid-area: trackcount
 }
 
-.guess > * {
+.guess > *,
+.hint > * {
     margin: 0;
 }
 .guess > h2,
