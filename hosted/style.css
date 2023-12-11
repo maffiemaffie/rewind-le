@@ -331,7 +331,7 @@ form {
 
     padding: 10px;
     background: linear-gradient(to top right, var(--background), var(--secondary));
-    box-shadow: 0 0 5px black;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 
     margin: 10px 0;
 }
