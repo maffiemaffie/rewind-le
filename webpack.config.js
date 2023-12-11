@@ -4,7 +4,6 @@ module.exports = {
     entry: {
         app: './client/app.jsx',
         linkAccount: './client/linkAccount.jsx',
-        search: './client/search.jsx',
         login: './client/login.jsx',
         stats: './client/stats.jsx',
         settings: './client/settings.jsx',
