@@ -69,7 +69,7 @@ header {
     width: 100%;
 }
 
-nav {
+#mainNav {
     position: fixed;
     padding: 0.25em;
     box-sizing: border-box;
@@ -85,7 +85,7 @@ nav {
     z-index: 500;
 }
 
-nav > .site-title {
+#mainNav > .site-title {
     flex-grow: 1;
     text-align: center;
 }
@@ -630,6 +630,116 @@ form {
     transform: translate(-50%, -50%);
 
     font-size: x-large;
+}
+
+fieldset {
+    border: none;
+}
+
+#accountWindow {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+#accountWindow > form {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    background: none;
+}
+
+#accountWindow label {
+    color: var(--primary);
+}
+
+#accountWindow .textfield {
+    padding: 0
+}
+
+#accountWindow .textfield:disabled > * {
+    display: none;
+}
+
+#accountWindow .textfield:disabled > label:first-of-type,
+#accountWindow .textfield:disabled > input:first-of-type {
+    display: initial;
+}
+
+#accountWindow .textfield:disabled > input:first-of-type {
+    border: none;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.editButton:disabled {
+    display: none;
+}
+
+#updatePassword >  :disabled {
+    display: none;
+}
+
+#activePage { 
+    flex-grow: 1;
+}
+
+#settingsSidebar {
+    position: fixed;
+    width: 100vw;
+    bottom: 0;
+    left: 0;
+
+    border-top: 1.5px solid var(--primary);
+    background: linear-gradient(to top right, var(--background), var(--secondary));
+}
+
+#settingsSidebar > ul {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+
+    align-items: center;
+    list-style: none;
+
+    margin: 0;
+    padding: 0;
+    width: 100%;
+
+    box-sizing: border-box;
+}
+
+#settingsSidebar > ul > li > button {
+    border: none;
+    background: none;
+    font-family: 'Questrial', Arial, Helvetica, sans-serif;
+    font-size: medium;
+    padding: 0;
+    margin: 0;
+}
+
+#settingsSidebar > ul > li > a,
+#settingsSidebar > ul > li > button {
+    text-decoration: none;
+    color: var(--text);
+    font-size: large;
+}
+
+#settingsSidebar > ul > li {
+    padding: 1em;
+}
+
+#settingsSidebar > ul > li:hover,
+#settingsSidebar > ul > li:focus {
+    background-color: var(--primary);
+    color: var(--text);
+}
+
+#settingsSidebar > ul > li:active > a,
+#settingsSidebar > ul > li:active > button {
+    color: var(--primary);
+}
+
+#settingsSidebar > ul > li:active {
+    background-color: var(--text);
 }
 
 /* web */

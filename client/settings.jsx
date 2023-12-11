@@ -8,7 +8,10 @@ let username;
 const handleUpdatePassword = (data) => {
   if (!data.error) {
     document.querySelector('#updatePassword > .textField').setAttribute('disabled', '');
-    document.querySelector('#updatePassword > .editButton').setAttribute('disabled', '');
+    document.querySelector('#updatePassword > .editButton').removeAttribute('disabled');
+
+    document.getElementById('passwordField').value = '';
+    document.getElementById('oldPasswordField').value = '';
   }
 }
 
