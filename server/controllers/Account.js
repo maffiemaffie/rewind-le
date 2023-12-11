@@ -1,7 +1,7 @@
 const models = require('../models');
 const { updateHints } = require('./Game');
 
-const { Account, Game, Stats } = models;
+const { Account, Stats } = models;
 const LastFm = require('./LastFm');
 
 const loginPage = (req, res) => res.render('login');
@@ -30,7 +30,7 @@ const login = (req, res) => {
   });
 };
 
-const createNewStats = (req, res) => {
+const createNewStats = (req) => {
   const owner = req.session.account._id;
   const breakdown = [];
   for (let i = 1; i <= 10; i++) {
@@ -47,7 +47,7 @@ const createNewStats = (req, res) => {
   };
 
   return new Stats(statsDoc);
-}
+};
 
 const signup = async (req, res) => {
   const username = `${req.body.username}`;
@@ -119,14 +119,14 @@ const removeAccount = (req, res) => {
   delete req.session.account.lastFm;
 
   res.status(204).json({});
-}
+};
 
 const getInfo = (req, res) => {
-  res.json({ 
+  res.json({
     username: req.session.account.username,
     hasPremium: req.session.account.isPremiumUser,
   });
-}
+};
 
 const changePassword = async (req, res) => {
   const oldPassword = `${req.body.oldPassword}`;
@@ -136,50 +136,53 @@ const changePassword = async (req, res) => {
     return res.status(400).json({ error: 'All fields are required!' });
   }
 
-  return Account.authenticate(req.session.account.username, oldPassword, async (err, account) => {
-    if (err || !account) {
-      return res.status(403).json({ error: 'Wrong password!' });
-    }
+  const hash = await Account.generateHash(newPassword);
 
-    const hash = await Account.generateHash(newPassword);
-    account.password = hash;
-    await account.save();
+  return Account.changePassword(
+    req.session.account.username,
+    oldPassword,
+    hash,
+    async (err, account) => {
+      if (err || !account) {
+        return res.status(403).json({ error: 'Wrong password!' });
+      }
 
-    req.session.account = Account.toAPI(account);
+      req.session.account = Account.toAPI(account);
 
-    return res.status(204).json({});
-  });
-}
+      return res.status(204).json({});
+    },
+  );
+};
 
 const activatePremium = async (req, res) => {
   const query = { _id: req.session.account._id };
   const account = await Account.findOne(query);
 
-  if (account.isPremiumUser) return res.status(422).json({ error: "User is already a premium member" });
+  if (account.isPremiumUser) return res.status(422).json({ error: 'User is already a premium member' });
   account.isPremiumUser = true;
   await account.save();
   req.session.account = Account.toAPI(account);
 
   return res.status(204).json({});
-}
+};
 
 const cancelPremium = async (req, res) => {
   const query = { _id: req.session.account._id };
   const account = await Account.findOne(query);
 
-  if (!account.isPremiumUser) return res.status(404).json({ error: "User is not a premium member" });
+  if (!account.isPremiumUser) return res.status(404).json({ error: 'User is not a premium member' });
   account.isPremiumUser = false;
   await account.save();
   req.session.account = Account.toAPI(account);
 
   return res.status(204).json({});
-}
+};
 
 const buyHints = async (req, res) => {
-  const amount = req.body.amount;
+  const { amount } = req.body;
 
-  if (!amount) return res.status(400).json({ error: "Must specify number of hints" });
-  
+  if (!amount) return res.status(400).json({ error: 'Must specify number of hints' });
+
   const query = { _id: req.session.account._id };
   const account = await Account.findOne(query);
 
@@ -190,7 +193,7 @@ const buyHints = async (req, res) => {
   await updateHints(req, account.hintsOwned);
 
   return res.status(204).json({});
-}
+};
 
 module.exports = {
   loginPage,
