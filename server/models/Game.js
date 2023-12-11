@@ -126,6 +126,11 @@ const GuessSchema = new mongoose.Schema({
 });
 
 const HintSchema = new mongoose.Schema({
+  hintNumber: {
+    type: Number,
+    required: true,
+    min: 1,
+  },
   attribute: {
     type: String,
     enum: ['year', 'trackCount', 'rank'],

@@ -1,6 +1,7 @@
 const models = require('../models');
+const { updateHints } = require('./Game');
 
-const { Account, Stats } = models;
+const { Account, Game, Stats } = models;
 const LastFm = require('./LastFm');
 
 const loginPage = (req, res) => res.render('login');
@@ -174,6 +175,23 @@ const cancelPremium = async (req, res) => {
   return res.status(204).json({});
 }
 
+const buyHints = async (req, res) => {
+  const amount = req.body.amount;
+
+  if (!amount) return res.status(400).json({ error: "Must specify number of hints" });
+  
+  const query = { _id: req.session.account._id };
+  const account = await Account.findOne(query);
+
+  account.hintsOwned += amount;
+  await account.save();
+  req.session.account = Account.toAPI(account);
+
+  await updateHints(req, account.hintsOwned);
+
+  return res.status(204).json({});
+}
+
 module.exports = {
   loginPage,
   login,
@@ -187,4 +205,5 @@ module.exports = {
   changePassword,
   activatePremium,
   cancelPremium,
+  buyHints,
 };
